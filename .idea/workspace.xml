@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="e963dec4-d4d5-4a3a-9fe7-034a9a0be503" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/Observer/Blog.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/Observer/MailObserver.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/Observer/ObserverMain.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/Observer/User.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/fms/Building.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/fms/DesignSuggestion.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/fms/exceptions/DesignSuggestionException.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/fms/exceptions/WrongInvestmentStateException.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/fms/fmsMain.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/proxy_v2/Image.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/proxy_v2/ImageInterface.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/proxy_v2/ProxyImage.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/test/pl/edu/pjwstk/mpr/fms/SimpleInvestmentTest.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/DemoCoR.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/MailSender.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/MailSendingException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/Message.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/BaseMessageValidatorChainComponent.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/IMessageComponentValidator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/MessageReceiverMailAddressCorrectnessValidator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/MessageReceiverMailAddressValidator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/MessageTextValidator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/MessageTitleLenghtValidator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/MessageTitleValidator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/MessageValidatorException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/StringEmptinessValidator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/fms/Building.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/fms/DesignSuggestion.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/fms/exceptions/DesignSuggestionException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/fms/exceptions/WrongInvestmentStateException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/fms/fmsMain.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/observer/Blog.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/observer/MailObserver.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/observer/ObserverMain.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/observer/User.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/proxyV4/MillenniumFalcon.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/proxyV4/MillenniumFalconProxy.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/proxyV4/Pilot.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/proxyV4/Spaceship.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/proxyV4/demo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/proxy_v2/Image.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/proxy_v2/ImageInterface.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/proxy_v2/ProxyImage.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/proxy_v2/ProxyMain.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/proxy_v3/Demo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/proxy_v3/Kalkulator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/proxy_v3/KalkulatorProxy.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/pl/edu/pjwstk/mpr/chainOfResponsibility/MailSenderTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/pl/edu/pjwstk/mpr/fms/SimpleInvestmentTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/pl/edu/pjwstk/mpr/observer/ObserverMainTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/pl/edu/pjwstk/mpr/proxy/proxyTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/pl/edu/pjwstk/mpr/proxy_v2/ProxyMainTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/pl/edu/pjwstk/mpr/proxy_v3/KalkulatorTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/5.2.1/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.2.1/executionHistory/executionHistory.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/5.2.1/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.2.1/executionHistory/executionHistory.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/5.2.1/fileContent/fileContent.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.2.1/fileContent/fileContent.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/5.2.1/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.2.1/fileHashes/fileHashes.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/5.2.1/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.2.1/fileHashes/fileHashes.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/5.2.1/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.2.1/fileHashes/resourceHashesCache.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/5.2.1/javaCompile/classAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.2.1/javaCompile/classAnalysis.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/5.2.1/javaCompile/jarAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.2.1/javaCompile/jarAnalysis.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/5.2.1/javaCompile/javaCompile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.2.1/javaCompile/javaCompile.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/5.2.1/javaCompile/taskHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.2.1/javaCompile/taskHistory.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/cache.properties" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/cache.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sbt.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/WeightedAverage.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/fms/Investment.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/fms/Investment.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/fms/InvestmentState.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/fms/InvestmentState.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/fms/SimpleInvestment.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/fms/SimpleInvestment.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/fms/WrongStateException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/proxy/Client.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/proxy/Client.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/proxy/Directory.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/proxy/Directory.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/proxy/ProxyClient.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/proxy/ProxyClient.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/test/pl/edu/pjwstk/mpr/WeightedAverageTest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/reports/tests/test/classes/pl.edu.pjwstk.mpr.WeightedAverageTest.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/reports/tests/test/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/reports/tests/test/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/reports/tests/test/packages/pl.edu.pjwstk.mpr.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/test-results/test/TEST-pl.edu.pjwstk.mpr.WeightedAverageTest.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/test-results/test/binary/results.bin" beforeDir="false" afterPath="$PROJECT_DIR$/build/test-results/test/binary/results.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/WeightedAverage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/WeightedAverage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/fms/Investment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/fms/Investment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/fms/InvestmentState.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/fms/InvestmentState.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/fms/SimpleInvestment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/fms/SimpleInvestment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/fms/WrongStateException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/proxy/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/proxy/Client.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/proxy/Directory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/proxy/Directory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/proxy/ProxyClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/proxy/ProxyClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/pl/edu/pjwstk/mpr/WeightedAverageTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/pl/edu/pjwstk/mpr/WeightedAverageTest.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2GSjalMhU5mbFLmeJ3cdoprP819" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "C:/Users/SzyDe/OneDrive/Pulpit/Studia/Semestr3/metody_programowania/mpry-zadania",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)"
+  }
+}]]></component>
+  <component name="RunManager">
+    <configuration name="MailSenderTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;pl.edu.pjwstk.mpr.chainOfResponsibility.MailSenderTest&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Gradle.MailSenderTest" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="e963dec4-d4d5-4a3a-9fe7-034a9a0be503" name="Changes" comment="" />
+      <created>1666388944540</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1666388944540</updated>
+      <workItem from="1666388946092" duration="1248000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/zadania_java_mpr$MailSenderTest.ic" NAME="MailSenderTest Coverage Results" MODIFIED="1666389179652" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+  </component>
+</project>

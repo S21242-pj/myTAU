@@ -1,22 +1,21 @@
 package pl.edu.pjwstk.mpr.fms;
 
 public interface Investment {
+    void initializeConcept();
 
-    void createNewConcept() throws WrongStateException;
+    void resign();
 
-    void signIt() throws WrongStateException;
+    void buyParcel();
 
-    void buyParcel() throws WrongStateException;
+    void sellParcel();
 
-    void sellParcel() throws WrongStateException;
+    void startProjectingBuilding();
 
-    void makeANewBuildProject() throws WrongStateException;
+    DesignSuggestion makeDesignSuggestion(String suggestion);
 
-    void makeNewDesignProjectSuggestion() throws WrongStateException;
+    void resolveDesignSuggestion(DesignSuggestion resolvedSuggestion);
 
-    void resolveDesignProjectSuggestion() throws WrongStateException;
+    void buildBuilding();
 
-    void buildABuildFromProjectSuggestion() throws WrongStateException;
-
-    void giveANewBuildToClient() throws WrongStateException;
- }
+    void giveToClient();
+}

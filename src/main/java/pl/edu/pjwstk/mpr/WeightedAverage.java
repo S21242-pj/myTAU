@@ -1,3 +1,4 @@
+/*
 package pl.edu.pjwstk.mpr;
 
 import java.io.BufferedReader;
@@ -82,4 +83,4 @@ public class WeightedAverage {
 
         return result;
     }
-}
+}*/

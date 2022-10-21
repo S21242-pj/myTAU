@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="pl.edu.pjwstk.mpr.WeightedAverageTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2021-01-27T15:02:29" hostname="DESKTOP-0EHSE77" time="0.05">
-  <properties/>
-  <testcase name="should_throw_when_file_does_not_exist" classname="pl.edu.pjwstk.mpr.WeightedAverageTest" time="0.05"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>

@@ -17,11 +17,11 @@ public class ProxyClient implements User {
     }
 
     public String getUserPassword() {
-        return client.getUserPassword() + "_HACKED";
+        return client.getUserPassword() /*+ "_H@CK3D_P@55w0rd"*/;
     }
 
     public void someOperations() {
-        if(getUserLogin().equals("ExampleOfAClientLogin") && getUserPassword().equals("ExampleOfAClientPassword")){
+        if(getUserLogin().equals("UserLogin") && getUserPassword().equals("UserPassword")){
          Directory directory = new Directory();
          directory.someOperations();
         } else {

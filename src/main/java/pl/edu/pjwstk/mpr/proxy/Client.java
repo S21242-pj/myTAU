@@ -3,15 +3,15 @@ package pl.edu.pjwstk.mpr.proxy;
 public class Client implements User {
 
     public String getUserLogin() {
-        return "ExampleOfAClientLogin";
+        return "UserLogin";
     }
 
     public String getUserPassword() {
-        return "ExampleOfAClientPassword";
+        return "UserPassword";
     }
 
     public void someOperations() {
-        if(getUserLogin().equals("ExampleOfAClientLogin") && getUserPassword().equals("ExampleOfAClientPassword")){
+        if(getUserLogin().equals("UserLogin") && getUserPassword().equals("UserPassword")){
             Directory d = new Directory();
             d.someOperations();
         } else {
