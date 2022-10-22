@@ -1,0 +1,2246 @@
+Index: src/main/java/pl/edu/pjwstk/mpr/fms/DesignSuggestion.java
+===================================================================
+diff --git a/src/main/java/pl/edu/pjwstk/mpr/fms/DesignSuggestion.java b/src/main/java/pl/edu/pjwstk/mpr/fms/DesignSuggestion.java
+deleted file mode 100644
+--- a/src/main/java/pl/edu/pjwstk/mpr/fms/DesignSuggestion.java	(revision 7f73337cd176f56e3f22b07e3feb51ca105f842f)
++++ /dev/null	(revision 7f73337cd176f56e3f22b07e3feb51ca105f842f)
+@@ -1,23 +0,0 @@
+-package pl.edu.pjwstk.mpr.fms;
+-
+-public class DesignSuggestion {
+-
+-    String suggestion;
+-
+-    DesignSuggestion(String suggestion) {
+-        this.suggestion = suggestion;
+-    }
+-
+-    @Override
+-    public boolean equals(Object obj) {
+-        if (obj instanceof DesignSuggestion) {
+-            return ((DesignSuggestion) obj).suggestion.equals(this.suggestion);
+-        }
+-        return false;
+-    }
+-
+-    @Override
+-    public int hashCode() {
+-        return suggestion == null ? 0 : suggestion.hashCode();
+-    }
+-}
+Index: src/main/java/pl/edu/pjwstk/mpr/fms/SimpleInvestment.java
+===================================================================
+diff --git a/src/main/java/pl/edu/pjwstk/mpr/fms/SimpleInvestment.java b/src/main/java/pl/edu/pjwstk/mpr/fms/SimpleInvestment.java
+deleted file mode 100644
+--- a/src/main/java/pl/edu/pjwstk/mpr/fms/SimpleInvestment.java	(revision 7f73337cd176f56e3f22b07e3feb51ca105f842f)
++++ /dev/null	(revision 7f73337cd176f56e3f22b07e3feb51ca105f842f)
+@@ -1,141 +0,0 @@
+-package pl.edu.pjwstk.mpr.fms;
+-
+-import pl.edu.pjwstk.mpr.fms.exceptions.DesignSuggestionException;
+-import pl.edu.pjwstk.mpr.fms.exceptions.WrongInvestmentStateException;
+-
+-import java.util.HashSet;
+-import java.util.Set;
+-
+-public class SimpleInvestment implements Investment {
+-
+-    InvestmentState currentInvestmentState;
+-
+-    Set<DesignSuggestion> unsolvedSuggestions = new HashSet<DesignSuggestion>();
+-
+-    public SimpleInvestment() {
+-        initializeConcept();
+-    }
+-
+-    public void setCurrentInvestmentState(InvestmentState state) {
+-        this.currentInvestmentState = state;
+-    }
+-
+-    public InvestmentState getCurrentInvestmentState() {
+-        return this.currentInvestmentState;
+-    }
+-
+-    public int getNumberOfUnsolvedDesignSuggestions() {
+-        return unsolvedSuggestions.size();
+-    }
+-
+-    @Override
+-    public void initializeConcept() {
+-        currentInvestmentState = InvestmentState.BUILDING_CONCEPT;
+-    }
+-
+-    @Override
+-    public void resign() {
+-        if (currentInvestmentState == InvestmentState.PARCEL_SOLD || currentInvestmentState == InvestmentState.BUILDING_CONCEPT) {
+-            currentInvestmentState = InvestmentState.INVESTMENT_RESIGNED;
+-        } else {
+-            throw new WrongInvestmentStateException(
+-                    "To resign from investment, it has to be in PARCEL_SOLD or BUILDING_CONCEPT state, current state is: "
+-                            + currentInvestmentState
+-            );
+-        }
+-    }
+-
+-    @Override
+-    public void buyParcel() {
+-        if (currentInvestmentState != InvestmentState.BUILDING_CONCEPT) {
+-            throw new WrongInvestmentStateException(
+-                    "To buy parcel, investment has to be in BUILDING_CONCEPT state, current state is: "
+-                            + currentInvestmentState
+-            );
+-        } else {
+-            currentInvestmentState = InvestmentState.PARCEL_BOUGHT;
+-        }
+-    }
+-
+-    @Override
+-    public void sellParcel() {
+-        if (currentInvestmentState != InvestmentState.PARCEL_BOUGHT) {
+-            throw new WrongInvestmentStateException(
+-                    "To sell parcel, investment has to be in PARCEL_BOUGHT state, current state is: "
+-                            + currentInvestmentState
+-            );
+-        } else {
+-            currentInvestmentState = InvestmentState.PARCEL_SOLD;
+-        }
+-    }
+-
+-    @Override
+-    public void startProjectingBuilding() {
+-        if (currentInvestmentState != InvestmentState.PARCEL_BOUGHT) {
+-            throw new WrongInvestmentStateException(
+-                    "To start designing, investment has to be in PARCEL_BOUGHT state, current state is: "
+-                            + currentInvestmentState
+-            );
+-        } else {
+-            currentInvestmentState = InvestmentState.DESIGN_PHASE;
+-        }
+-    }
+-
+-    @Override
+-    public DesignSuggestion makeDesignSuggestion(String suggestion) {
+-        if (currentInvestmentState != InvestmentState.DESIGN_PHASE) {
+-            throw new WrongInvestmentStateException(
+-                    "To make design suggestion, investment has to be in DESIGN_PHASE state, current state is: "
+-                            + currentInvestmentState
+-            );
+-        } else {
+-            var designSuggestion = new DesignSuggestion(suggestion);
+-            unsolvedSuggestions.add(designSuggestion);
+-            return designSuggestion;
+-        }
+-    }
+-
+-    @Override
+-    public void resolveDesignSuggestion(DesignSuggestion resolvedSuggestion) {
+-        if (currentInvestmentState != InvestmentState.DESIGN_PHASE) {
+-            throw new WrongInvestmentStateException(
+-                    "To resolve design suggestion, investment has to be in DESIGN_PHASE state, current state is: "
+-                            + currentInvestmentState
+-            );
+-        } else if (!unsolvedSuggestions.contains(resolvedSuggestion)) {
+-            throw new DesignSuggestionException(
+-                    "There is no such suggestion to resolve"
+-            );
+-        } else {
+-            unsolvedSuggestions.remove(resolvedSuggestion);
+-        }
+-    }
+-
+-    @Override
+-    public void buildBuilding() {
+-        if (currentInvestmentState != InvestmentState.DESIGN_PHASE) {
+-            throw new WrongInvestmentStateException(
+-                    "To build the building, investment has to be in DESIGN_PHASE state, current state is: "
+-                            + currentInvestmentState
+-            );
+-        } else if (!unsolvedSuggestions.isEmpty()) {
+-            throw new DesignSuggestionException(
+-                    "To build the building, all the design suggestions have to be resolved. Number of suggestion left: " + unsolvedSuggestions.size()
+-            );
+-        } else {
+-            currentInvestmentState = InvestmentState.BUILDING_FINISHED;
+-        }
+-    }
+-
+-    @Override
+-    public void giveToClient() {
+-        if (currentInvestmentState != InvestmentState.BUILDING_FINISHED) {
+-            throw new WrongInvestmentStateException(
+-                    "To give investment to client, investment has to be in BUILDING_FINISHED state, current state is: "
+-                            + currentInvestmentState
+-            );
+-        } else {
+-            currentInvestmentState = InvestmentState.INVESTMENT_FINISHED;
+-        }
+-    }
+-}
+Index: src/main/java/pl/edu/pjwstk/mpr/fms/Building.java
+===================================================================
+diff --git a/src/main/java/pl/edu/pjwstk/mpr/fms/Building.java b/src/main/java/pl/edu/pjwstk/mpr/fms/Building.java
+deleted file mode 100644
+--- a/src/main/java/pl/edu/pjwstk/mpr/fms/Building.java	(revision 7f73337cd176f56e3f22b07e3feb51ca105f842f)
++++ /dev/null	(revision 7f73337cd176f56e3f22b07e3feb51ca105f842f)
+@@ -1,12 +0,0 @@
+-package pl.edu.pjwstk.mpr.fms;
+-
+-public class Building extends SimpleInvestment {
+-
+-    @Override
+-    public void buildBuilding() {
+-        System.out.println("Postaw budynek");
+-        super.buildBuilding();
+-
+-
+-    }
+-}
+\ No newline at end of file
+Index: src/main/java/pl/edu/pjwstk/mpr/observer/MailObserver.java
+===================================================================
+diff --git a/src/main/java/pl/edu/pjwstk/mpr/observer/MailObserver.java b/src/main/java/pl/edu/pjwstk/mpr/observer/MailObserver.java
+deleted file mode 100644
+--- a/src/main/java/pl/edu/pjwstk/mpr/observer/MailObserver.java	(revision 7f73337cd176f56e3f22b07e3feb51ca105f842f)
++++ /dev/null	(revision 7f73337cd176f56e3f22b07e3feb51ca105f842f)
+@@ -1,5 +0,0 @@
+-package pl.edu.pjwstk.mpr.observer;
+-
+-public interface MailObserver {
+-    void newsletter(String mail);
+-}
+\ No newline at end of file
+Index: src/main/java/pl/edu/pjwstk/mpr/proxyV4/demo.java
+===================================================================
+diff --git a/src/main/java/pl/edu/pjwstk/mpr/proxyV4/demo.java b/src/main/java/pl/edu/pjwstk/mpr/proxyV4/demo.java
+deleted file mode 100644
+--- a/src/main/java/pl/edu/pjwstk/mpr/proxyV4/demo.java	(revision 7f73337cd176f56e3f22b07e3feb51ca105f842f)
++++ /dev/null	(revision 7f73337cd176f56e3f22b07e3feb51ca105f842f)
+@@ -1,11 +0,0 @@
+-package pl.edu.pjwstk.mpr.proxyV4;
+-
+-public class demo {
+-    public static void main(String[] args) {
+-        Spaceship falcon1 = new MillenniumFalconProxy(new Pilot("Han Solo"));
+-        falcon1.fly();
+-
+-        Spaceship falcon2 = new MillenniumFalconProxy(new Pilot("Jabba the Hutt"));
+-        falcon2.fly();
+-    }
+-}
+Index: src/test/java/pl/edu/pjwstk/mpr/observer/ObserverMainTest.java
+===================================================================
+diff --git a/src/test/java/pl/edu/pjwstk/mpr/observer/ObserverMainTest.java b/src/test/java/pl/edu/pjwstk/mpr/observer/ObserverMainTest.java
+deleted file mode 100644
+--- a/src/test/java/pl/edu/pjwstk/mpr/observer/ObserverMainTest.java	(revision 7f73337cd176f56e3f22b07e3feb51ca105f842f)
++++ /dev/null	(revision 7f73337cd176f56e3f22b07e3feb51ca105f842f)
+@@ -1,122 +0,0 @@
+-//package pl.edu.pjwstk.mpr.observer;
+-//
+-//import org.junit.Test;
+-//
+-//import static org.assertj.core.api.Assertions.assertThat;
+-//import static org.assertj.core.api.Assertions.assertThatThrownBy;
+-//
+-//public class ObserverMainTest {
+-//
+-//    @Test
+-//    public void should_create_class_User() {
+-//        //assume
+-//        var user = new User("Szymon");
+-//
+-//        //assert
+-//        assertThat(user).isNotNull();
+-//    }
+-//
+-//    @Test
+-//    public void should_create_class_Blog() {
+-//        //assume
+-//        var blog = new Blog();
+-//
+-//        //assert
+-//        assertThat(blog).isNotNull();
+-//    }
+-//
+-//    @Test
+-//    public void should_user_subscribe_blog(){
+-//        //assume
+-//        var blog = new Blog();
+-//
+-//        //assert
+-//        try {
+-//            blog.subscribe(new User("Szymon"));
+-//        } catch (Exception e) {
+-//            assertThatThrownBy(() -> {
+-//                throw e;
+-//            }).isInstanceOf(IllegalArgumentException.class)
+-//                    .hasMessage("*error about the problem*");
+-//        }
+-//    }
+-//
+-//    @Test
+-//    public void should_start_observing_and_sending_new_emails() {
+-//        //assume
+-//        var blog = new Blog();
+-//
+-//        //assert
+-//        try {
+-//            blog.subscribe(new User("Patrycja"));
+-//        } catch (Exception e) {
+-//            assertThatThrownBy(() -> {
+-//                throw e;
+-//            }).isInstanceOf(IllegalArgumentException.class)
+-//                    .hasMessage("*some error explain about what is going wrong*");
+-//        }
+-//    }
+-//
+-//    @Test
+-//    public void should_throw_when_user_not_specified() {
+-//        //assume
+-//        var blog = new Blog();
+-//
+-//        // assert
+-//        try {
+-//            blog.subscribe(new User(""));
+-//        } catch (Exception e) {
+-//            assertThatThrownBy(() -> {
+-//                throw e;
+-//            }).isInstanceOf(IllegalArgumentException.class)
+-//                    .hasMessage("No file specified.");
+-//        }
+-//    }
+-//
+-//    @Test
+-//    public void should_user_got_mail(){
+-//        //assume
+-//        var blog = new Blog();
+-//
+-//        //act
+-//        blog.subscribe(new User("Patrycja"));
+-//
+-//        //assert
+-//        blog.startWork();
+-//    }
+-//
+-//    @Test
+-//    public void should_start_without_users(){
+-//        //assume
+-//        var blog = new Blog();
+-//
+-//        //assert
+-//        blog.startWork();
+-//    }
+-//
+-//    @Test
+-//    public void should_start_with_many_users(){
+-//        //assume
+-//        var blog = new Blog();
+-//
+-//        //act
+-//        blog.subscribe(new User("UserOneWantsNewsletter"));
+-//        blog.subscribe(new User("UserTwoWantsNewsletter"));
+-//        blog.subscribe(new User("UserThreeWantsNewsletter"));
+-//        blog.subscribe(new User("UserFourWantsNewsletter"));
+-//        blog.subscribe(new User("UserFiveWantsNewsletter"));
+-//        blog.subscribe(new User("UserSixWantsNewsletter"));
+-//        blog.subscribe(new User("UserSevenWantsNewsletter"));
+-//        blog.subscribe(new User("UserEightWantsNewsletter"));
+-//        blog.subscribe(new User("UserNineWantsNewsletter"));
+-//        blog.subscribe(new User("UserTenWantsNewsletter"));
+-//
+-//        //assert
+-//        blog.startWork();
+-//    }
+-//
+-//
+-//
+-//
+-//
+-//}
+Index: src/main/java/pl/edu/pjwstk/mpr/proxy/Directory.java
+===================================================================
+diff --git a/src/main/java/pl/edu/pjwstk/mpr/proxy/Directory.java b/src/main/java/pl/edu/pjwstk/mpr/proxy/Directory.java
+deleted file mode 100644
+--- a/src/main/java/pl/edu/pjwstk/mpr/proxy/Directory.java	(revision 7f73337cd176f56e3f22b07e3feb51ca105f842f)
++++ /dev/null	(revision 7f73337cd176f56e3f22b07e3feb51ca105f842f)
+@@ -1,8 +0,0 @@
+-package pl.edu.pjwstk.mpr.proxy;
+-
+-public class Directory {
+-    public void someOperations(){
+-        System.out.println("Some operations");
+-    }
+-
+-}
+Index: src/main/java/pl/edu/pjwstk/mpr/proxy_v2/ProxyMain.java
+===================================================================
+diff --git a/src/main/java/pl/edu/pjwstk/mpr/proxy_v2/ProxyMain.java b/src/main/java/pl/edu/pjwstk/mpr/proxy_v2/ProxyMain.java
+deleted file mode 100644
+--- a/src/main/java/pl/edu/pjwstk/mpr/proxy_v2/ProxyMain.java	(revision 7f73337cd176f56e3f22b07e3feb51ca105f842f)
++++ /dev/null	(revision 7f73337cd176f56e3f22b07e3feb51ca105f842f)
+@@ -1,35 +0,0 @@
+-/*
+-package pl.edu.pjwstk.mpr.proxy_v2;
+-
+-public class ProxyMain {
+-
+-    public static void main(String[] args){
+-
+-        // Bez proxy z automatu używamy dużo zasobów serwera/komputera, gdzie przy takiej stronie
+-        // jak np.: pintrest czy innej z obrazkami, sprawimy, że serwis jeżeli nie ma jakichkolwiek zabezpieczeń
+-        // zauważalnie spowolni.
+-
+-        // Odwołania do głównego obiektu bez użycia proxy
+-        ImageInterface image = new Image();
+-        System.out.println("Object without proxy:");
+-        System.out.println("First access: " + image.getImage());
+-        System.out.println("Second access: " + image.getImage());
+-
+-        System.out.println("\n");
+-
+-        // Odwołania do głównego obiektu z użyciem obiektu proxy
+-        image = new ProxyImage();
+-        System.out.println("Object with proxy:");
+-        System.out.println("First access: " + image.getImage());
+-        System.out.println("Second access: " + image.getImage());
+-    }
+-    */
+-/**
+-     * dostęp ktoś może ktoś nie
+-     *
+-     * 
+-     *//*
+-
+-
+-
+-}*/
+Index: src/main/java/pl/edu/pjwstk/mpr/proxy/Client.java
+===================================================================
+diff --git a/src/main/java/pl/edu/pjwstk/mpr/proxy/Client.java b/src/main/java/pl/edu/pjwstk/mpr/proxy/Client.java
+deleted file mode 100644
+--- a/src/main/java/pl/edu/pjwstk/mpr/proxy/Client.java	(revision 7f73337cd176f56e3f22b07e3feb51ca105f842f)
++++ /dev/null	(revision 7f73337cd176f56e3f22b07e3feb51ca105f842f)
+@@ -1,23 +0,0 @@
+-package pl.edu.pjwstk.mpr.proxy;
+-
+-public class Client implements User {
+-
+-    public String getUserLogin() {
+-        return "UserLogin";
+-    }
+-
+-    public String getUserPassword() {
+-        return "UserPassword";
+-    }
+-
+-    public void someOperations() {
+-        if(getUserLogin().equals("UserLogin") && getUserPassword().equals("UserPassword")){
+-            Directory d = new Directory();
+-            d.someOperations();
+-        } else {
+-            System.out.println("Access denied");
+-        }
+-    }
+-
+-
+-}
+Index: src/main/java/pl/edu/pjwstk/mpr/proxy_v3/Kalkulator.java
+===================================================================
+diff --git a/src/main/java/pl/edu/pjwstk/mpr/proxy_v3/Kalkulator.java b/src/main/java/pl/edu/pjwstk/mpr/proxy_v3/Kalkulator.java
+deleted file mode 100644
+--- a/src/main/java/pl/edu/pjwstk/mpr/proxy_v3/Kalkulator.java	(revision 7f73337cd176f56e3f22b07e3feb51ca105f842f)
++++ /dev/null	(revision 7f73337cd176f56e3f22b07e3feb51ca105f842f)
+@@ -1,7 +0,0 @@
+-package pl.edu.pjwstk.mpr.proxy_v3;
+-
+-public class Kalkulator {
+-    public int sumowanie(int a, int  b) {
+-        return a+b;
+-    }
+-}
+Index: src/main/java/pl/edu/pjwstk/mpr/WeightedAverage.java
+===================================================================
+diff --git a/src/main/java/pl/edu/pjwstk/mpr/WeightedAverage.java b/src/main/java/pl/edu/pjwstk/mpr/WeightedAverage.java
+deleted file mode 100644
+--- a/src/main/java/pl/edu/pjwstk/mpr/WeightedAverage.java	(revision 7f73337cd176f56e3f22b07e3feb51ca105f842f)
++++ /dev/null	(revision 7f73337cd176f56e3f22b07e3feb51ca105f842f)
+@@ -1,86 +0,0 @@
+-/*
+-package pl.edu.pjwstk.mpr;
+-
+-import java.io.BufferedReader;
+-import java.io.File;
+-import java.io.FileReader;
+-import java.io.IOException;
+-import java.math.BigDecimal;
+-import java.math.RoundingMode;
+-
+-
+-public class WeightedAverage {
+-
+-    private final File testFile;
+-
+-    WeightedAverage() {
+-        this.testFile = null;
+-    }
+-
+-    WeightedAverage(String filePath) {
+-        this.testFile = new File("/src/test/resources/" + filePath);
+-    }
+-
+-    public double calculate() {
+-
+-        try {
+-            if (testFile == null) {
+-                throw new IllegalArgumentException("No file specified.");
+-            }
+-
+-            if (!testFile.exists()) {
+-                throw new IllegalArgumentException("File does not exist.");
+-            }
+-
+-            var fileReader = new BufferedReader(new FileReader(testFile));
+-
+-            long sum = 0, weightSum = 0;
+-
+-            String line = null;
+-            while ((line = fileReader.readLine()) != null) {
+-                long element, elementsWeight;
+-                String[] data = line.split(" ");
+-                if (data.length == 2) {
+-                    try {
+-                        elementsWeight = Long.parseLong(data[0]);
+-                        element = Long.parseLong(data[1]);
+-                    } catch (NumberFormatException e) {
+-                        throw new IllegalArgumentException("Wrong data file format.");
+-                    }
+-                } else {
+-                    throw new IllegalArgumentException("Wrong data file format.");
+-                }
+-
+-                sum += element * elementsWeight;
+-                weightSum += elementsWeight;
+-            }
+-
+-            BigDecimal resultBD = new BigDecimal((double) sum / (double) weightSum).setScale(2, RoundingMode.HALF_UP);
+-            return resultBD.doubleValue();
+-
+-        } catch (IOException e) {
+-            throw new IllegalStateException(e);
+-        }
+-    }
+-
+-    // to satisfy exercise specification (removing trailing zeroes), result has to be returned as a String
+-    public String resultAsString() {
+-        var result = calculate();
+-
+-        String stringResult = String.format("%.2f", result);
+-
+-        return removeTrailingZeroes(stringResult);
+-    }
+-
+-    String removeTrailingZeroes(String result) {
+-        char lastChar = result.charAt(result.length() - 1);
+-        if (lastChar == '0' && result.contains(".")) {
+-            return removeTrailingZeroes(result.substring(0, result.lastIndexOf('0')));
+-        }
+-        if (lastChar == '.') {
+-            return result.replace(".", "");
+-        }
+-
+-        return result;
+-    }
+-}*/
+Index: src/main/java/pl/edu/pjwstk/mpr/fms/exceptions/WrongInvestmentStateException.java
+===================================================================
+diff --git a/src/main/java/pl/edu/pjwstk/mpr/fms/exceptions/WrongInvestmentStateException.java b/src/main/java/pl/edu/pjwstk/mpr/fms/exceptions/WrongInvestmentStateException.java
+deleted file mode 100644
+--- a/src/main/java/pl/edu/pjwstk/mpr/fms/exceptions/WrongInvestmentStateException.java	(revision 7f73337cd176f56e3f22b07e3feb51ca105f842f)
++++ /dev/null	(revision 7f73337cd176f56e3f22b07e3feb51ca105f842f)
+@@ -1,8 +0,0 @@
+-package pl.edu.pjwstk.mpr.fms.exceptions;
+-
+-public class WrongInvestmentStateException extends RuntimeException {
+-
+-    public WrongInvestmentStateException(String errorMessage) {
+-        super(errorMessage);
+-    }
+-}
+\ No newline at end of file
+Index: src/main/java/pl/edu/pjwstk/mpr/proxyV4/MillenniumFalcon.java
+===================================================================
+diff --git a/src/main/java/pl/edu/pjwstk/mpr/proxyV4/MillenniumFalcon.java b/src/main/java/pl/edu/pjwstk/mpr/proxyV4/MillenniumFalcon.java
+deleted file mode 100644
+--- a/src/main/java/pl/edu/pjwstk/mpr/proxyV4/MillenniumFalcon.java	(revision 7f73337cd176f56e3f22b07e3feb51ca105f842f)
++++ /dev/null	(revision 7f73337cd176f56e3f22b07e3feb51ca105f842f)
+@@ -1,10 +0,0 @@
+-package pl.edu.pjwstk.mpr.proxyV4;
+-
+-import pl.edu.pjwstk.mpr.proxyV4.Spaceship;
+-
+-public class MillenniumFalcon implements Spaceship {
+-    @Override
+-    public void fly() {
+-        System.out.println("Welcome, Han. The Millennium Falcon is starting up its engines!");
+-    }
+-}
+\ No newline at end of file
+Index: src/main/java/pl/edu/pjwstk/mpr/fms/Investment.java
+===================================================================
+diff --git a/src/main/java/pl/edu/pjwstk/mpr/fms/Investment.java b/src/main/java/pl/edu/pjwstk/mpr/fms/Investment.java
+deleted file mode 100644
+--- a/src/main/java/pl/edu/pjwstk/mpr/fms/Investment.java	(revision 7f73337cd176f56e3f22b07e3feb51ca105f842f)
++++ /dev/null	(revision 7f73337cd176f56e3f22b07e3feb51ca105f842f)
+@@ -1,21 +0,0 @@
+-package pl.edu.pjwstk.mpr.fms;
+-
+-public interface Investment {
+-    void initializeConcept();
+-
+-    void resign();
+-
+-    void buyParcel();
+-
+-    void sellParcel();
+-
+-    void startProjectingBuilding();
+-
+-    DesignSuggestion makeDesignSuggestion(String suggestion);
+-
+-    void resolveDesignSuggestion(DesignSuggestion resolvedSuggestion);
+-
+-    void buildBuilding();
+-
+-    void giveToClient();
+-}
+Index: src/test/java/pl/edu/pjwstk/mpr/WeightedAverageTest.java
+===================================================================
+diff --git a/src/test/java/pl/edu/pjwstk/mpr/WeightedAverageTest.java b/src/test/java/pl/edu/pjwstk/mpr/WeightedAverageTest.java
+deleted file mode 100644
+--- a/src/test/java/pl/edu/pjwstk/mpr/WeightedAverageTest.java	(revision 7f73337cd176f56e3f22b07e3feb51ca105f842f)
++++ /dev/null	(revision 7f73337cd176f56e3f22b07e3feb51ca105f842f)
+@@ -1,165 +0,0 @@
+-//package pl.edu.pjwstk.mpr;
+-//
+-//import org.junit.Test;
+-//
+-//import java.io.StringReader;
+-//
+-//import static org.assertj.core.api.Assertions.assertThat;
+-//import static org.assertj.core.api.Assertions.assertThatThrownBy;
+-//
+-//public class WeightedAverageTest {
+-//
+-//    @Test
+-//    public void should_create_class() {
+-//        // assume
+-//        var average = new WeightedAverage();
+-//
+-//        // assert
+-//        assertThat(average).isNotNull();
+-//    }
+-//
+-//    @Test
+-//    public void should_calculate_simple_average() {
+-//        // assume
+-//        var average = new WeightedAverage("average/test_avg_1.txt");
+-//
+-//        // act
+-//        double avg = average.calculate();
+-//
+-//        // assert
+-//        assertThat(avg).isEqualTo(2.0);
+-//    }
+-//
+-//    @Test
+-//    public void should_throw_when_file_does_not_exist() {
+-//        // assert
+-//        assertThatThrownBy(() -> {
+-//            new WeightedAverage("average/abstraction.txt").calculate();
+-//        }).isInstanceOf(IllegalArgumentException.class)
+-//                .hasMessage("File does not exist.");
+-//    }
+-//
+-//    @Test
+-//    public void should_throw_when_file_not_specifited() {
+-//
+-//        // assume = assert
+-//        try {
+-//            new WeightedAverage().calculate();
+-//        } catch (Exception e) {
+-//            assertThatThrownBy(() -> {
+-//                throw e;
+-//            }).isInstanceOf(IllegalArgumentException.class)
+-//                    .hasMessage("No file specified.");
+-//        }
+-//    }
+-//
+-//    @Test
+-//    public void should_throw_when_content_of_a_file_has_wrong_format() {
+-//        // assume + asserts
+-//        try {
+-//            new WeightedAverage("average/test_avg_wrong_content_format.txt").calculate();
+-//        } catch (Exception e) {
+-//            assertThatThrownBy(() -> {
+-//                throw e;
+-//            }).isInstanceOf(IllegalArgumentException.class)
+-//                    .hasMessage("Wrong data file format.");
+-//        }
+-//
+-//        try {
+-//            new WeightedAverage("average/test_avg_wrong_content_format_2.txt").calculate();
+-//        } catch (Exception e) {
+-//            assertThatThrownBy(() -> {
+-//                throw e;
+-//            }).isInstanceOf(IllegalArgumentException.class)
+-//                    .hasMessage("The data format in the file is invalid! Check it out!.");
+-//        }
+-//    }
+-//
+-//    @Test
+-//    public void should_calculate_average_of_large_file() { // max 1GB
+-//        // assume
+-//        var average = new WeightedAverage("average/test_avg_example_large_file.txt");
+-//
+-//        // act
+-//        double avg = average.calculate();
+-//
+-//        // assert
+-//        assertThat(avg).isEqualTo(5.59);
+-//    }
+-//
+-//    @Test
+-//    public void should_calculate_average_example_1() {
+-//        // assume
+-//        var average = new WeightedAverage("average/test_avg_example1.txt");
+-//
+-//        // act
+-//        double avg = average.calculate();
+-//
+-//        // assert
+-//        assertThat(avg).isEqualTo(4.36);
+-//    }
+-//
+-//    @Test
+-//    public void should_calculate_average_example_2() {
+-//        // assume
+-//        var average = new WeightedAverage("average/test_avg_example2.txt");
+-//
+-//        // act
+-//        double avg = average.calculate();
+-//
+-//        // assert
+-//        assertThat(avg).isEqualTo(2);
+-//    }
+-//
+-//    @Test
+-//    public void should_calculate_average_example_3(){
+-//        // assume
+-//        var average = new WeightedAverage("average\\test_avg_example3.txt");
+-//
+-//        // act
+-//        double avg = average.calculate();
+-//
+-//        // assert
+-//        assertThat(avg).isEqualTo(4);
+-//
+-//    }
+-//
+-//    @Test
+-//    public void should_remove_trailing_zeros_1() {
+-//        // assume
+-//        var average = new WeightedAverage("average\\test_avg_example_zeros_1.txt");
+-//
+-//        // act
+-//        String avg = average.resultAsString();
+-//
+-//        // assert
+-//        assertThat(avg).isEqualTo("1.22");
+-//    }
+-//
+-//
+-//    @Test
+-//    public void should_remove_trailing_zeros_2() {
+-//        // assume
+-//        var average = new WeightedAverage("average\\test_avg_example_zeros_2.txt");
+-//
+-//        // act
+-//        String avg = average.resultAsString();
+-//
+-//        // assert
+-//        assertThat(avg).isEqualTo("1.2");
+-//    }
+-//
+-//    @Test
+-//    public void should_remove_trailing_zeros_3() {
+-//        // assume
+-//        var average = new WeightedAverage("average\\test_avg_example_zeros_3.txt");
+-//
+-//        // act
+-//        String avg = average.resultAsString();
+-//
+-//        // assert
+-//        assertThat(avg).isEqualTo("1");
+-//    }
+-//
+-//
+-//}
+Index: src/main/java/pl/edu/pjwstk/mpr/proxy/User.java
+===================================================================
+diff --git a/src/main/java/pl/edu/pjwstk/mpr/proxy/User.java b/src/main/java/pl/edu/pjwstk/mpr/proxy/User.java
+deleted file mode 100644
+--- a/src/main/java/pl/edu/pjwstk/mpr/proxy/User.java	(revision 7f73337cd176f56e3f22b07e3feb51ca105f842f)
++++ /dev/null	(revision 7f73337cd176f56e3f22b07e3feb51ca105f842f)
+@@ -1,11 +0,0 @@
+-package pl.edu.pjwstk.mpr.proxy;
+-
+-public interface User {
+-
+-    public String getUserLogin();
+-
+-    public String getUserPassword();
+-
+-    void someOperations();
+-
+-}
+Index: src/test/java/pl/edu/pjwstk/mpr/fms/SimpleInvestmentTest.java
+===================================================================
+diff --git a/src/test/java/pl/edu/pjwstk/mpr/fms/SimpleInvestmentTest.java b/src/test/java/pl/edu/pjwstk/mpr/fms/SimpleInvestmentTest.java
+deleted file mode 100644
+--- a/src/test/java/pl/edu/pjwstk/mpr/fms/SimpleInvestmentTest.java	(revision 7f73337cd176f56e3f22b07e3feb51ca105f842f)
++++ /dev/null	(revision 7f73337cd176f56e3f22b07e3feb51ca105f842f)
+@@ -1,257 +0,0 @@
+-package pl.edu.pjwstk.mpr.fms;
+-
+-import org.junit.Test;
+-import pl.edu.pjwstk.mpr.fms.exceptions.DesignSuggestionException;
+-import pl.edu.pjwstk.mpr.fms.exceptions.WrongInvestmentStateException;
+-
+-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+-import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
+-
+-public class SimpleInvestmentTest {
+-
+-    @Test
+-    public void when_investment_created_state_should_be_building_concept() {
+-
+-        var investment = new SimpleInvestment();
+-
+-        assertThat(investment.currentInvestmentState).isEqualTo(InvestmentState.BUILDING_CONCEPT);
+-    }
+-
+-    @Test
+-    public void when_state_other_than_building_concept_can_not_buy_parcel() {
+-        var investment = new SimpleInvestment();
+-
+-        // tests can be written to check all the other wrong states
+-        investment.setCurrentInvestmentState(InvestmentState.DESIGN_PHASE);
+-
+-        assertThatThrownBy(investment::buyParcel).isInstanceOf(WrongInvestmentStateException.class)
+-                .hasMessageContaining("To buy parcel, investment has to be in BUILDING_CONCEPT state, current state is:");
+-    }
+-
+-    @Test
+-    public void when_state_is_building_concept_can_buy_parcel() {
+-        // don't have to set current state, because after creating, it will already be BUILDING_CONCEPT
+-        var investment = new SimpleInvestment();
+-
+-        investment.buyParcel();
+-
+-        assertThat(investment.currentInvestmentState).isEqualTo(InvestmentState.PARCEL_BOUGHT);
+-    }
+-
+-    @Test
+-    public void when_state_is_building_concept_can_resign_from_investment() {
+-        var investment = new SimpleInvestment();
+-
+-        investment.resign();
+-
+-        assertThat(investment.currentInvestmentState).isEqualTo(InvestmentState.INVESTMENT_RESIGNED);
+-    }
+-
+-    @Test
+-    public void when_state_other_than_parcel_bought_can_not_sell_parcel() {
+-        var investment = new SimpleInvestment();
+-
+-        // tests can be written to check all the other wrong states
+-        investment.setCurrentInvestmentState(InvestmentState.DESIGN_PHASE);
+-
+-        assertThatThrownBy(investment::sellParcel).isInstanceOf(WrongInvestmentStateException.class)
+-                .hasMessageContaining("To sell parcel, investment has to be in PARCEL_BOUGHT state, current state is:");
+-    }
+-
+-    @Test
+-    public void when_state_is_parcel_bought_can_sell_parcel() {
+-        var investment = new SimpleInvestment();
+-
+-        investment.setCurrentInvestmentState(InvestmentState.PARCEL_BOUGHT);
+-
+-        investment.sellParcel();
+-
+-        assertThat(investment.currentInvestmentState).isEqualTo(InvestmentState.PARCEL_SOLD);
+-    }
+-
+-    @Test
+-    public void when_state_is_parcel_sold_can_resign() {
+-        var investment = new SimpleInvestment();
+-
+-        investment.setCurrentInvestmentState(InvestmentState.PARCEL_SOLD);
+-
+-        investment.resign();
+-
+-        assertThat(investment.currentInvestmentState).isEqualTo(InvestmentState.INVESTMENT_RESIGNED);
+-    }
+-
+-    @Test
+-    public void when_state_other_than_parcel_bought_can_not_start_designing() {
+-        var investment = new SimpleInvestment();
+-
+-        // tests can be written to check all the other wrong states
+-        investment.setCurrentInvestmentState(InvestmentState.BUILDING_CONCEPT);
+-
+-        assertThatThrownBy(investment::startProjectingBuilding).isInstanceOf(WrongInvestmentStateException.class)
+-                .hasMessageContaining("To start designing, investment has to be in PARCEL_BOUGHT state, current state is:");
+-    }
+-
+-    @Test
+-    public void when_state_is_parcel_bought_can_start_designing() {
+-        var investment = new SimpleInvestment();
+-
+-        investment.setCurrentInvestmentState(InvestmentState.PARCEL_BOUGHT);
+-
+-        investment.startProjectingBuilding();
+-
+-        assertThat(investment.currentInvestmentState).isEqualTo(InvestmentState.DESIGN_PHASE);
+-    }
+-
+-    @Test
+-    public void when_state_other_than_design_phase_can_not_make_design_suggestion() {
+-        var investment = new SimpleInvestment();
+-
+-        // tests can be written to check all the other wrong states
+-        investment.setCurrentInvestmentState(InvestmentState.PARCEL_BOUGHT);
+-
+-        assertThatThrownBy(() -> {
+-            investment.makeDesignSuggestion("Suggestion 1");
+-        }).isInstanceOf(WrongInvestmentStateException.class)
+-                .hasMessageContaining("To make design suggestion, investment has to be in DESIGN_PHASE state, current state is: ");
+-    }
+-
+-    @Test
+-    public void when_state_is_design_phase_can_make_design_suggestion() {
+-        var investment = new SimpleInvestment();
+-
+-        investment.setCurrentInvestmentState(InvestmentState.DESIGN_PHASE);
+-
+-        investment.makeDesignSuggestion("Suggestion 1");
+-
+-        assertThat(investment.getNumberOfUnsolvedDesignSuggestions()).isEqualTo(1);
+-    }
+-
+-    @Test
+-    public void when_state_is_design_phase_can_make_multiple_design_suggestions() {
+-        var investment = new SimpleInvestment();
+-
+-        investment.setCurrentInvestmentState(InvestmentState.DESIGN_PHASE);
+-
+-        investment.makeDesignSuggestion("Suggestion 1");
+-        investment.makeDesignSuggestion("Suggestion 2");
+-        investment.makeDesignSuggestion("Suggestion 3");
+-
+-        assertThat(investment.getNumberOfUnsolvedDesignSuggestions()).isEqualTo(3);
+-    }
+-
+-    @Test
+-    public void when_there_is_no_suggestion_can_not_solve_it() {
+-        var investment = new SimpleInvestment();
+-
+-        investment.setCurrentInvestmentState(InvestmentState.DESIGN_PHASE);
+-
+-        var suggestionToResolve = new DesignSuggestion("Suggestion 1");
+-
+-        assertThatThrownBy(() -> {
+-            investment.resolveDesignSuggestion(suggestionToResolve);
+-        }).isInstanceOf(DesignSuggestionException.class)
+-                .hasMessage("There is no such suggestion to resolve");
+-    }
+-
+-    @Test
+-    public void when_two_equal_suggestions_are_made_one_is_omitted() {
+-        var investment = new SimpleInvestment();
+-
+-        investment.setCurrentInvestmentState(InvestmentState.DESIGN_PHASE);
+-
+-        investment.makeDesignSuggestion("Suggestion 1");
+-        investment.makeDesignSuggestion("Suggestion 1");
+-
+-        assertThat(investment.getNumberOfUnsolvedDesignSuggestions()).isEqualTo(1);
+-    }
+-
+-    @Test
+-    public void when_there_is_created_design_suggestion_can_resolve_it() {
+-        var investment = new SimpleInvestment();
+-
+-        investment.setCurrentInvestmentState(InvestmentState.DESIGN_PHASE);
+-
+-        var currentSuggestion = investment.makeDesignSuggestion("Suggestion 1");
+-
+-        investment.resolveDesignSuggestion(currentSuggestion);
+-
+-        assertThat(investment.getNumberOfUnsolvedDesignSuggestions()).isEqualTo(0);
+-    }
+-
+-    @Test
+-    public void when_there_are_unsolved_suggestions_can_not_build_building_case_1() {
+-        var investment = new SimpleInvestment();
+-
+-        investment.setCurrentInvestmentState(InvestmentState.DESIGN_PHASE);
+-
+-        investment.makeDesignSuggestion("Suggestion 1");
+-
+-        assertThatThrownBy(investment::buildBuilding).isInstanceOf(DesignSuggestionException.class)
+-                .hasMessageContaining("To build the building, all the design suggestions have to be resolved. Number of suggestion left:");
+-    }
+-
+-    @Test
+-    public void when_there_are_unsolved_suggestions_can_not_build_building_case_2() {
+-        var investment = new SimpleInvestment();
+-
+-        investment.setCurrentInvestmentState(InvestmentState.DESIGN_PHASE);
+-
+-        investment.makeDesignSuggestion("Suggestion 1");
+-
+-        var currentSuggestion = investment.makeDesignSuggestion("Suggestion 2");
+-
+-        investment.resolveDesignSuggestion(currentSuggestion);
+-
+-        assertThatThrownBy(investment::buildBuilding).isInstanceOf(DesignSuggestionException.class)
+-                .hasMessageContaining("To build the building, all the design suggestions have to be resolved. Number of suggestion left:");
+-    }
+-
+-    @Test
+-    public void when_there_are_no_suggestion_and_state_is_design_phase_can_build_building() {
+-        var investment = new SimpleInvestment();
+-
+-        investment.setCurrentInvestmentState(InvestmentState.DESIGN_PHASE);
+-
+-        investment.buildBuilding();
+-
+-        assertThat(investment.currentInvestmentState).isEqualTo(InvestmentState.BUILDING_FINISHED);
+-    }
+-
+-    @Test
+-    public void when_all_suggestions_are_resolved_and_state_is_design_phase_can_build_building() {
+-        var investment = new SimpleInvestment();
+-
+-        investment.setCurrentInvestmentState(InvestmentState.DESIGN_PHASE);
+-
+-        var suggestion1 = investment.makeDesignSuggestion("Suggestion 1");
+-        var suggestion2 = investment.makeDesignSuggestion("Suggestion 2");
+-        investment.resolveDesignSuggestion(suggestion1);
+-        investment.resolveDesignSuggestion(suggestion2);
+-
+-        investment.buildBuilding();
+-
+-        assertThat(investment.currentInvestmentState).isEqualTo(InvestmentState.BUILDING_FINISHED);
+-    }
+-
+-    @Test
+-    public void when_state_other_than_building_finished_can_not_give_to_client() {
+-        var investment = new SimpleInvestment();
+-
+-        // tests can be written to check all the other wrong states
+-        investment.setCurrentInvestmentState(InvestmentState.PARCEL_BOUGHT);
+-
+-        assertThatThrownBy(investment::giveToClient).isInstanceOf(WrongInvestmentStateException.class)
+-                .hasMessageContaining("To give investment to client, investment has to be in BUILDING_FINISHED state, current state is:");
+-    }
+-
+-    @Test
+-    public void when_state_is_building_finished_can_give_to_client() {
+-        var investment = new SimpleInvestment();
+-
+-        investment.setCurrentInvestmentState(InvestmentState.BUILDING_FINISHED);
+-
+-        investment.giveToClient();
+-
+-        assertThat(investment.currentInvestmentState).isEqualTo(InvestmentState.INVESTMENT_FINISHED);
+-    }
+-}
+\ No newline at end of file
+Index: src/main/java/pl/edu/pjwstk/mpr/observer/Blog.java
+===================================================================
+diff --git a/src/main/java/pl/edu/pjwstk/mpr/observer/Blog.java b/src/main/java/pl/edu/pjwstk/mpr/observer/Blog.java
+deleted file mode 100644
+--- a/src/main/java/pl/edu/pjwstk/mpr/observer/Blog.java	(revision 7f73337cd176f56e3f22b07e3feb51ca105f842f)
++++ /dev/null	(revision 7f73337cd176f56e3f22b07e3feb51ca105f842f)
+@@ -1,49 +0,0 @@
+-package pl.edu.pjwstk.mpr.observer;
+-
+-import java.util.ArrayList;
+-import java.util.List;
+-import java.util.Random;
+-import java.util.UUID;
+-import java.util.concurrent.TimeUnit;
+-
+-public class Blog {
+-
+-    private List<MailObserver> mailObservers;
+-
+-    public Blog() {
+-        mailObservers = new ArrayList<>();
+-    }
+-
+-    public void subscribe(MailObserver observers) {
+-        this.mailObservers.add(observers);
+-    }
+-
+-
+-    /**
+-     * Emiter Publisher !!!!!! + Observer
+-     */
+-
+-    public void startWork() {
+-        Thread thread = new Thread(() -> {
+-            while (Thread.currentThread().isAlive()) {
+-                int randomDelay = new Random().nextInt(1000);
+-                try {
+-                    Thread.sleep(randomDelay);
+-                } catch (InterruptedException e) {
+-                    e.printStackTrace();
+-                }
+-                for (MailObserver observer : mailObservers) {
+-                    observer.newsletter("time: " + randomDelay + ", content: " + UUID.randomUUID().toString());
+-                }
+-                try {
+-                    TimeUnit.SECONDS.sleep(1);
+-                } catch (InterruptedException e) {
+-                    e.printStackTrace();
+-                }
+-            }
+-        });
+-        thread.start();
+-    }
+-}
+-
+-
+Index: src/main/java/pl/edu/pjwstk/mpr/proxy_v3/KalkulatorProxy.java
+===================================================================
+diff --git a/src/main/java/pl/edu/pjwstk/mpr/proxy_v3/KalkulatorProxy.java b/src/main/java/pl/edu/pjwstk/mpr/proxy_v3/KalkulatorProxy.java
+deleted file mode 100644
+--- a/src/main/java/pl/edu/pjwstk/mpr/proxy_v3/KalkulatorProxy.java	(revision 7f73337cd176f56e3f22b07e3feb51ca105f842f)
++++ /dev/null	(revision 7f73337cd176f56e3f22b07e3feb51ca105f842f)
+@@ -1,16 +0,0 @@
+-package pl.edu.pjwstk.mpr.proxy_v3;
+-
+-public class KalkulatorProxy {
+-    String podaneHaslo;
+-    public KalkulatorProxy(String haslo) {
+-        this.podaneHaslo = haslo;
+-
+-    }
+-    public int sumowanie(int a, int b) {
+-        Kalkulator x = new Kalkulator();
+-        if (podaneHaslo != "0000") {
+-            throw new RuntimeException("Password Error");
+-        }
+-        return x.sumowanie(a, b);
+-    }
+-}
+\ No newline at end of file
+Index: src/main/java/pl/edu/pjwstk/mpr/proxy_v3/Demo.java
+===================================================================
+diff --git a/src/main/java/pl/edu/pjwstk/mpr/proxy_v3/Demo.java b/src/main/java/pl/edu/pjwstk/mpr/proxy_v3/Demo.java
+deleted file mode 100644
+--- a/src/main/java/pl/edu/pjwstk/mpr/proxy_v3/Demo.java	(revision 7f73337cd176f56e3f22b07e3feb51ca105f842f)
++++ /dev/null	(revision 7f73337cd176f56e3f22b07e3feb51ca105f842f)
+@@ -1,14 +0,0 @@
+-package pl.edu.pjwstk.mpr.proxy_v3;
+-
+-public class Demo {
+-    public static void main(String[] args) {
+-        var Kalkulator = new Kalkulator();
+-
+-        System.out.println(Kalkulator.sumowanie(3,3));
+-
+-
+-        var KalkulatorProxy = new KalkulatorProxy("0000");
+-        System.out.println(KalkulatorProxy.sumowanie(4,4));
+-
+-    }
+-}
+Index: src/test/java/pl/edu/pjwstk/mpr/proxy/proxyTest.java
+===================================================================
+diff --git a/src/test/java/pl/edu/pjwstk/mpr/proxy/proxyTest.java b/src/test/java/pl/edu/pjwstk/mpr/proxy/proxyTest.java
+deleted file mode 100644
+--- a/src/test/java/pl/edu/pjwstk/mpr/proxy/proxyTest.java	(revision 7f73337cd176f56e3f22b07e3feb51ca105f842f)
++++ /dev/null	(revision 7f73337cd176f56e3f22b07e3feb51ca105f842f)
+@@ -1,51 +0,0 @@
+-package pl.edu.pjwstk.mpr.proxy;
+-
+-import org.junit.Test;
+-
+-import static org.assertj.core.api.Assertions.assertThat;
+-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+-
+-public class proxyTest {
+-
+-    @Test
+-    public void should_create_class_client(){
+-        //assume
+-        var client = new Client();
+-
+-        //assert
+-        assertThat(client).isNotNull();
+-    }
+-
+-    @Test
+-    public void should_create_class_directory(){
+-        //assume
+-        var directory = new Directory();
+-
+-        //assert
+-        assertThat(directory).isNotNull();
+-    }
+-
+-    @Test
+-    public void should_create_class_proxyclient(){
+-        //assume
+-        var proxyClient = new proxyTest();
+-
+-        //assert
+-        assertThat(proxyClient).isNotNull();
+-    }
+-
+-    @Test
+-    public void should_get_access_to_the_directory() {
+-        //assume
+-        User proxyClient = new ProxyClient();
+-
+-        //asser
+-
+-    }
+-
+-    @Test
+-    public void should_not_have_acces_to_the_directory(){
+-
+-    }
+-
+-}
+Index: src/main/java/pl/edu/pjwstk/mpr/fms/fmsMain.java
+===================================================================
+diff --git a/src/main/java/pl/edu/pjwstk/mpr/fms/fmsMain.java b/src/main/java/pl/edu/pjwstk/mpr/fms/fmsMain.java
+deleted file mode 100644
+--- a/src/main/java/pl/edu/pjwstk/mpr/fms/fmsMain.java	(revision 7f73337cd176f56e3f22b07e3feb51ca105f842f)
++++ /dev/null	(revision 7f73337cd176f56e3f22b07e3feb51ca105f842f)
+@@ -1,17 +0,0 @@
+-package pl.edu.pjwstk.mpr.fms;
+-
+-public class fmsMain {
+-
+-    public static void main(String[] args) {
+-        var investement = new SimpleInvestment();
+-
+-        investement.buyParcel();
+-        investement.startProjectingBuilding();
+-        var suggestion1 = investement.makeDesignSuggestion("foo");
+-        var suggestion2 = investement.makeDesignSuggestion("baz");
+-        investement.resolveDesignSuggestion(suggestion2);
+-        investement.resolveDesignSuggestion(suggestion1);
+-        investement.buildBuilding();
+-        investement.giveToClient();
+-    }
+-}
+Index: src/main/java/pl/edu/pjwstk/mpr/proxy_v2/Image.java
+===================================================================
+diff --git a/src/main/java/pl/edu/pjwstk/mpr/proxy_v2/Image.java b/src/main/java/pl/edu/pjwstk/mpr/proxy_v2/Image.java
+deleted file mode 100644
+--- a/src/main/java/pl/edu/pjwstk/mpr/proxy_v2/Image.java	(revision 7f73337cd176f56e3f22b07e3feb51ca105f842f)
++++ /dev/null	(revision 7f73337cd176f56e3f22b07e3feb51ca105f842f)
+@@ -1,10 +0,0 @@
+-package pl.edu.pjwstk.mpr.proxy_v2;
+-
+-public class Image implements ImageInterface{
+-
+-    @Override
+-    public String getImage(){
+-        return "HiRes image data ...";
+-    }
+-}
+-
+Index: src/main/java/pl/edu/pjwstk/mpr/proxy/ProxyClient.java
+===================================================================
+diff --git a/src/main/java/pl/edu/pjwstk/mpr/proxy/ProxyClient.java b/src/main/java/pl/edu/pjwstk/mpr/proxy/ProxyClient.java
+deleted file mode 100644
+--- a/src/main/java/pl/edu/pjwstk/mpr/proxy/ProxyClient.java	(revision 7f73337cd176f56e3f22b07e3feb51ca105f842f)
++++ /dev/null	(revision 7f73337cd176f56e3f22b07e3feb51ca105f842f)
+@@ -1,31 +0,0 @@
+-package pl.edu.pjwstk.mpr.proxy;
+-
+-public class ProxyClient implements User {
+-
+-    private Client client;
+-    private Directory directory;
+-
+-
+-    public ProxyClient() {
+-        super();
+-        this.client = new Client();
+-        this.directory = new Directory();
+-    }
+-
+-    public String getUserLogin() {
+-        return client.getUserLogin();
+-    }
+-
+-    public String getUserPassword() {
+-        return client.getUserPassword() /*+ "_H@CK3D_P@55w0rd"*/;
+-    }
+-
+-    public void someOperations() {
+-        if(getUserLogin().equals("UserLogin") && getUserPassword().equals("UserPassword")){
+-         Directory directory = new Directory();
+-         directory.someOperations();
+-        } else {
+-            System.out.println("Access denied");
+-        }
+-    }
+-}
+\ No newline at end of file
+Index: src/main/java/pl/edu/pjwstk/mpr/fms/exceptions/DesignSuggestionException.java
+===================================================================
+diff --git a/src/main/java/pl/edu/pjwstk/mpr/fms/exceptions/DesignSuggestionException.java b/src/main/java/pl/edu/pjwstk/mpr/fms/exceptions/DesignSuggestionException.java
+deleted file mode 100644
+--- a/src/main/java/pl/edu/pjwstk/mpr/fms/exceptions/DesignSuggestionException.java	(revision 7f73337cd176f56e3f22b07e3feb51ca105f842f)
++++ /dev/null	(revision 7f73337cd176f56e3f22b07e3feb51ca105f842f)
+@@ -1,8 +0,0 @@
+-package pl.edu.pjwstk.mpr.fms.exceptions;
+-
+-public class DesignSuggestionException extends RuntimeException {
+-
+-    public DesignSuggestionException(String errorMessage) {
+-        super(errorMessage);
+-    }
+-}
+\ No newline at end of file
+Index: src/main/java/pl/edu/pjwstk/mpr/proxy_v2/ProxyImage.java
+===================================================================
+diff --git a/src/main/java/pl/edu/pjwstk/mpr/proxy_v2/ProxyImage.java b/src/main/java/pl/edu/pjwstk/mpr/proxy_v2/ProxyImage.java
+deleted file mode 100644
+--- a/src/main/java/pl/edu/pjwstk/mpr/proxy_v2/ProxyImage.java	(revision 7f73337cd176f56e3f22b07e3feb51ca105f842f)
++++ /dev/null	(revision 7f73337cd176f56e3f22b07e3feb51ca105f842f)
+@@ -1,20 +0,0 @@
+-package pl.edu.pjwstk.mpr.proxy_v2;
+-
+-public class ProxyImage implements ImageInterface{
+-
+-    private Image image;
+-    private int counter = 0;
+-
+-    @Override
+-    public String getImage(){
+-
+-        counter++;
+-        if (counter > 1){
+-            if (image == null){
+-                image = new Image();
+-            }
+-            return image.getImage();
+-        }
+-        return "LoRes proxy thumbnail ...";
+-    }
+-}
+\ No newline at end of file
+Index: src/test/java/pl/edu/pjwstk/mpr/proxy_v2/ProxyMainTest.java
+===================================================================
+diff --git a/src/test/java/pl/edu/pjwstk/mpr/proxy_v2/ProxyMainTest.java b/src/test/java/pl/edu/pjwstk/mpr/proxy_v2/ProxyMainTest.java
+deleted file mode 100644
+--- a/src/test/java/pl/edu/pjwstk/mpr/proxy_v2/ProxyMainTest.java	(revision 7f73337cd176f56e3f22b07e3feb51ca105f842f)
++++ /dev/null	(revision 7f73337cd176f56e3f22b07e3feb51ca105f842f)
+@@ -1,70 +0,0 @@
+-//package pl.edu.pjwstk.mpr.proxy_v2;
+-//
+-//
+-//import org.junit.Test;
+-//
+-//import static org.assertj.core.api.Assertions.assertThat;
+-//import static org.assertj.core.api.Assertions.assertThatThrownBy;
+-//
+-//public class ProxyMainTest {
+-//
+-//    @Test
+-//    public void should_create_class_DesignPatternProxyV2() {
+-//        //assume
+-//        var designPatternClass = new ProxyMain();
+-//
+-//        //assert
+-//        assertThat(designPatternClass).isNotNull();
+-//    }
+-//
+-//    @Test
+-//    public void should_create_class_Image() {
+-//        //assume
+-//        var imageClass = new Image();
+-//
+-//        //assert
+-//        assertThat(imageClass).isNotNull();
+-//    }
+-//
+-//    @Test
+-//    public void should_create_class_ProxyImage() {
+-//        //assume
+-//        var proxyImage = new Image();
+-//
+-//        //assert
+-//        assertThat(proxyImage).isNotNull();
+-//    }
+-//
+-//    @Test
+-//    public void should_return_High_Resoultion_Image() {
+-//        //assume
+-//        var image = new Image();
+-//
+-//        //assert
+-//        try {
+-//            image.getImage();
+-//        } catch (Exception e) {
+-//            assertThatThrownBy(() -> {
+-//                throw e;
+-//            }).isInstanceOf(IllegalArgumentException.class)
+-//                    .hasMessage("There is no image.");
+-//        }
+-//
+-//    }
+-//
+-//    @Test
+-//    public void should_return_low_resolution_image() {
+-//        //assume
+-//        var image = new ProxyImage();
+-//
+-//        //assert
+-//        try {
+-//            image.getImage();
+-//        } catch (Exception e) {
+-//            assertThatThrownBy(() -> {
+-//                throw e;
+-//            }).isInstanceOf(IllegalArgumentException.class)
+-//                    .hasMessage("There is no image.");
+-//        }
+-//    }
+-//}
+\ No newline at end of file
+Index: src/main/java/pl/edu/pjwstk/mpr/proxy_v2/ImageInterface.java
+===================================================================
+diff --git a/src/main/java/pl/edu/pjwstk/mpr/proxy_v2/ImageInterface.java b/src/main/java/pl/edu/pjwstk/mpr/proxy_v2/ImageInterface.java
+deleted file mode 100644
+--- a/src/main/java/pl/edu/pjwstk/mpr/proxy_v2/ImageInterface.java	(revision 7f73337cd176f56e3f22b07e3feb51ca105f842f)
++++ /dev/null	(revision 7f73337cd176f56e3f22b07e3feb51ca105f842f)
+@@ -1,5 +0,0 @@
+-package pl.edu.pjwstk.mpr.proxy_v2;
+-
+-public interface ImageInterface {
+-        String getImage();
+-}
+Index: src/main/java/pl/edu/pjwstk/mpr/observer/User.java
+===================================================================
+diff --git a/src/main/java/pl/edu/pjwstk/mpr/observer/User.java b/src/main/java/pl/edu/pjwstk/mpr/observer/User.java
+deleted file mode 100644
+--- a/src/main/java/pl/edu/pjwstk/mpr/observer/User.java	(revision 7f73337cd176f56e3f22b07e3feb51ca105f842f)
++++ /dev/null	(revision 7f73337cd176f56e3f22b07e3feb51ca105f842f)
+@@ -1,15 +0,0 @@
+-package pl.edu.pjwstk.mpr.observer;
+-
+-public class User implements MailObserver {
+-
+-    private String name;
+-
+-    public User(String name) {
+-        this.name = name;
+-    }
+-
+-    @Override
+-    public void newsletter(String mail) {
+-        System.out.println(name + " got mail: " + mail);
+-    }
+-}
+\ No newline at end of file
+Index: src/main/java/pl/edu/pjwstk/mpr/observer/ObserverMain.java
+===================================================================
+diff --git a/src/main/java/pl/edu/pjwstk/mpr/observer/ObserverMain.java b/src/main/java/pl/edu/pjwstk/mpr/observer/ObserverMain.java
+deleted file mode 100644
+--- a/src/main/java/pl/edu/pjwstk/mpr/observer/ObserverMain.java	(revision 7f73337cd176f56e3f22b07e3feb51ca105f842f)
++++ /dev/null	(revision 7f73337cd176f56e3f22b07e3feb51ca105f842f)
+@@ -1,12 +0,0 @@
+-package pl.edu.pjwstk.mpr.observer;
+-
+-public class ObserverMain {
+-    public static void main(String[] args) {
+-        Blog blog = new Blog();
+-        blog.subscribe(new User("Szymon"));
+-        blog.subscribe(new User("Patrycja"));
+-        blog.subscribe(new User("Bożydar"));
+-        blog.subscribe(new User("asdsadsad"));
+-        blog.startWork();
+-    }
+-}
+Index: src/main/java/pl/edu/pjwstk/mpr/proxyV4/Spaceship.java
+===================================================================
+diff --git a/src/main/java/pl/edu/pjwstk/mpr/proxyV4/Spaceship.java b/src/main/java/pl/edu/pjwstk/mpr/proxyV4/Spaceship.java
+deleted file mode 100644
+--- a/src/main/java/pl/edu/pjwstk/mpr/proxyV4/Spaceship.java	(revision 7f73337cd176f56e3f22b07e3feb51ca105f842f)
++++ /dev/null	(revision 7f73337cd176f56e3f22b07e3feb51ca105f842f)
+@@ -1,5 +0,0 @@
+-package pl.edu.pjwstk.mpr.proxyV4;
+-
+-public interface Spaceship {
+-    public void fly();
+-}
+Index: src/main/java/pl/edu/pjwstk/mpr/proxy/startProxy.java
+===================================================================
+diff --git a/src/main/java/pl/edu/pjwstk/mpr/proxy/startProxy.java b/src/main/java/pl/edu/pjwstk/mpr/proxy/startProxy.java
+deleted file mode 100644
+--- a/src/main/java/pl/edu/pjwstk/mpr/proxy/startProxy.java	(revision 7f73337cd176f56e3f22b07e3feb51ca105f842f)
++++ /dev/null	(revision 7f73337cd176f56e3f22b07e3feb51ca105f842f)
+@@ -1,19 +0,0 @@
+-package pl.edu.pjwstk.mpr.proxy;
+-
+-public class startProxy {
+-
+-    public static void main(String[] args) {
+-        System.out.println("Design pattern: Proxy" );
+-
+-        System.out.println("\nWithout proxy");
+-        User client = new Client();
+-        System.out.println("login: " + client.getUserLogin() + ", pass: " + client.getUserPassword());
+-        client.someOperations();
+-
+-        System.out.println("\nWith proxy");
+-        User proxyClient = new ProxyClient();
+-        System.out.println("login: " + proxyClient.getUserLogin() + ", pass: " + proxyClient.getUserPassword());
+-        proxyClient.someOperations();
+-
+-    }
+-}
+Index: src/main/java/pl/edu/pjwstk/mpr/fms/InvestmentState.java
+===================================================================
+diff --git a/src/main/java/pl/edu/pjwstk/mpr/fms/InvestmentState.java b/src/main/java/pl/edu/pjwstk/mpr/fms/InvestmentState.java
+deleted file mode 100644
+--- a/src/main/java/pl/edu/pjwstk/mpr/fms/InvestmentState.java	(revision 7f73337cd176f56e3f22b07e3feb51ca105f842f)
++++ /dev/null	(revision 7f73337cd176f56e3f22b07e3feb51ca105f842f)
+@@ -1,11 +0,0 @@
+-package pl.edu.pjwstk.mpr.fms;
+-
+-public enum InvestmentState {
+-    BUILDING_CONCEPT,
+-    PARCEL_BOUGHT,
+-    PARCEL_SOLD,
+-    INVESTMENT_RESIGNED,
+-    DESIGN_PHASE,
+-    BUILDING_FINISHED,
+-    INVESTMENT_FINISHED
+-}
+Index: src/main/java/pl/edu/pjwstk/mpr/proxyV4/Pilot.java
+===================================================================
+diff --git a/src/main/java/pl/edu/pjwstk/mpr/proxyV4/Pilot.java b/src/main/java/pl/edu/pjwstk/mpr/proxyV4/Pilot.java
+deleted file mode 100644
+--- a/src/main/java/pl/edu/pjwstk/mpr/proxyV4/Pilot.java	(revision 7f73337cd176f56e3f22b07e3feb51ca105f842f)
++++ /dev/null	(revision 7f73337cd176f56e3f22b07e3feb51ca105f842f)
+@@ -1,17 +0,0 @@
+-package pl.edu.pjwstk.mpr.proxyV4;
+-
+-public class Pilot {
+-    private String name;
+-
+-    public Pilot(String name) {
+-        this.name = name;
+-    }
+-
+-    public String getName() {
+-        return name;
+-    }
+-
+-    public void setName(String name) {
+-        this.name = name;
+-    }
+-}
+\ No newline at end of file
+Index: src/main/java/pl/edu/pjwstk/mpr/proxyV4/MillenniumFalconProxy.java
+===================================================================
+diff --git a/src/main/java/pl/edu/pjwstk/mpr/proxyV4/MillenniumFalconProxy.java b/src/main/java/pl/edu/pjwstk/mpr/proxyV4/MillenniumFalconProxy.java
+deleted file mode 100644
+--- a/src/main/java/pl/edu/pjwstk/mpr/proxyV4/MillenniumFalconProxy.java	(revision 7f73337cd176f56e3f22b07e3feb51ca105f842f)
++++ /dev/null	(revision 7f73337cd176f56e3f22b07e3feb51ca105f842f)
+@@ -1,21 +0,0 @@
+-package pl.edu.pjwstk.mpr.proxyV4;
+-
+-public class MillenniumFalconProxy implements Spaceship {
+-
+-    private Pilot pilot;
+-    private Spaceship falcon;
+-
+-    public MillenniumFalconProxy(Pilot pilot) {
+-        this.pilot = pilot;
+-        this.falcon = new MillenniumFalcon();
+-    }
+-
+-    @Override
+-    public void fly() {
+-        if (pilot.getName().equals("Han Solo")) {
+-            falcon.fly();
+-        } else {
+-            System.out.printf("Sorry %s, only Han Solo can fly the Falcon!\n");
+-        }
+-    }
+-}
+Index: src/test/java/pl/edu/pjwstk/mpr/proxy_v3/KalkulatorTest.java
+===================================================================
+diff --git a/src/test/java/pl/edu/pjwstk/mpr/proxy_v3/KalkulatorTest.java b/src/test/java/pl/edu/pjwstk/mpr/proxy_v3/KalkulatorTest.java
+deleted file mode 100644
+--- a/src/test/java/pl/edu/pjwstk/mpr/proxy_v3/KalkulatorTest.java	(revision 7f73337cd176f56e3f22b07e3feb51ca105f842f)
++++ /dev/null	(revision 7f73337cd176f56e3f22b07e3feb51ca105f842f)
+@@ -1,50 +0,0 @@
+-package pl.edu.pjwstk.mpr.proxy_v3;
+-
+-import org.junit.Test;
+-
+-import static org.assertj.core.api.Assertions.assertThat;
+-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+-
+-public class KalkulatorTest {
+-
+-    @Test
+-    public void should_create_class_kalkulator(){
+-        //assume
+-        var x = new KalkulatorProxy("1111");
+-
+-        //assert
+-        assertThat(x).isNotNull();
+-    }
+-
+-    @Test
+-    public void should_enter_to_kalkulator_by_proxy(){
+-        //assume
+-        var x = new KalkulatorProxy("1111");
+-
+-        //assert
+-        assertThat(x.podaneHaslo).isEqualTo("1111");
+-    }
+-
+-    @Test
+-    public void should_calc_sum_of_two_int() {
+-        //assume
+-        var x = new KalkulatorProxy("0000");
+-
+-        //assert
+-        assert(x.sumowanie(1,2) == 3);
+-    }
+-
+-    @Test
+-    public void should_throw_error_becouse_wrong_password(){
+-        //assume
+-        var x = new KalkulatorProxy("2222");
+-
+-        assertThatThrownBy(() ->
+-        x.sumowanie(1,2)).isInstanceOf(RuntimeException.class).hasMessage("Password Error") ;
+-
+-    }
+-
+-
+-
+-
+-}
+\ No newline at end of file
+Index: src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/BaseMessageValidatorChainComponent.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/BaseMessageValidatorChainComponent.java b/src/main/java/chainOfResponsibility/validators/BaseMessageValidatorChainComponent.java
+rename from src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/BaseMessageValidatorChainComponent.java
+rename to src/main/java/chainOfResponsibility/validators/BaseMessageValidatorChainComponent.java
+--- a/src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/BaseMessageValidatorChainComponent.java	(revision 7f73337cd176f56e3f22b07e3feb51ca105f842f)
++++ b/src/main/java/chainOfResponsibility/validators/BaseMessageValidatorChainComponent.java	(date 1666467044673)
+@@ -1,6 +1,6 @@
+-package pl.edu.pjwstk.mpr.chainOfResponsibility.validators;
++package chainOfResponsibility.validators;
+ 
+-import pl.edu.pjwstk.mpr.chainOfResponsibility.Message;
++import chainOfResponsibility.Message;
+ 
+ public abstract class BaseMessageValidatorChainComponent implements IMessageComponentValidator {
+ 
+Index: src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/IMessageComponentValidator.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/IMessageComponentValidator.java b/src/main/java/chainOfResponsibility/validators/IMessageComponentValidator.java
+rename from src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/IMessageComponentValidator.java
+rename to src/main/java/chainOfResponsibility/validators/IMessageComponentValidator.java
+--- a/src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/IMessageComponentValidator.java	(revision 7f73337cd176f56e3f22b07e3feb51ca105f842f)
++++ b/src/main/java/chainOfResponsibility/validators/IMessageComponentValidator.java	(date 1666467044778)
+@@ -1,6 +1,6 @@
+-package pl.edu.pjwstk.mpr.chainOfResponsibility.validators;
++package chainOfResponsibility.validators;
+ 
+-import pl.edu.pjwstk.mpr.chainOfResponsibility.Message;
++import chainOfResponsibility.Message;
+ 
+ public interface IMessageComponentValidator {
+ 
+Index: src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/MessageReceiverMailAddressCorrectnessValidator.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/MessageReceiverMailAddressCorrectnessValidator.java b/src/main/java/chainOfResponsibility/validators/MessageReceiverMailAddressCorrectnessValidator.java
+rename from src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/MessageReceiverMailAddressCorrectnessValidator.java
+rename to src/main/java/chainOfResponsibility/validators/MessageReceiverMailAddressCorrectnessValidator.java
+--- a/src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/MessageReceiverMailAddressCorrectnessValidator.java	(revision 7f73337cd176f56e3f22b07e3feb51ca105f842f)
++++ b/src/main/java/chainOfResponsibility/validators/MessageReceiverMailAddressCorrectnessValidator.java	(date 1666467044791)
+@@ -1,6 +1,6 @@
+-package pl.edu.pjwstk.mpr.chainOfResponsibility.validators;
++package chainOfResponsibility.validators;
+ 
+-import pl.edu.pjwstk.mpr.chainOfResponsibility.Message;
++import chainOfResponsibility.Message;
+ 
+ public class MessageReceiverMailAddressCorrectnessValidator extends BaseMessageValidatorChainComponent {
+ 
+Index: src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/MessageTitleLenghtValidator.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/MessageTitleLenghtValidator.java b/src/main/java/chainOfResponsibility/validators/MessageTitleLenghtValidator.java
+rename from src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/MessageTitleLenghtValidator.java
+rename to src/main/java/chainOfResponsibility/validators/MessageTitleLenghtValidator.java
+--- a/src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/MessageTitleLenghtValidator.java	(revision 7f73337cd176f56e3f22b07e3feb51ca105f842f)
++++ b/src/main/java/chainOfResponsibility/validators/MessageTitleLenghtValidator.java	(date 1666467044585)
+@@ -1,6 +1,6 @@
+-package pl.edu.pjwstk.mpr.chainOfResponsibility.validators;
++package chainOfResponsibility.validators;
+ 
+-import pl.edu.pjwstk.mpr.chainOfResponsibility.Message;
++import chainOfResponsibility.Message;
+ 
+ public class MessageTitleLenghtValidator extends BaseMessageValidatorChainComponent {
+ 
+Index: src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/MessageValidatorException.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/MessageValidatorException.java b/src/main/java/chainOfResponsibility/validators/MessageValidatorException.java
+rename from src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/MessageValidatorException.java
+rename to src/main/java/chainOfResponsibility/validators/MessageValidatorException.java
+--- a/src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/MessageValidatorException.java	(revision 7f73337cd176f56e3f22b07e3feb51ca105f842f)
++++ b/src/main/java/chainOfResponsibility/validators/MessageValidatorException.java	(date 1666467044599)
+@@ -1,4 +1,4 @@
+-package pl.edu.pjwstk.mpr.chainOfResponsibility.validators;
++package chainOfResponsibility.validators;
+ 
+ public class MessageValidatorException extends Exception {
+ 
+Index: src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/MessageTextValidator.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/MessageTextValidator.java b/src/main/java/chainOfResponsibility/validators/MessageTextValidator.java
+rename from src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/MessageTextValidator.java
+rename to src/main/java/chainOfResponsibility/validators/MessageTextValidator.java
+--- a/src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/MessageTextValidator.java	(revision 7f73337cd176f56e3f22b07e3feb51ca105f842f)
++++ b/src/main/java/chainOfResponsibility/validators/MessageTextValidator.java	(date 1666467044805)
+@@ -1,6 +1,6 @@
+-package pl.edu.pjwstk.mpr.chainOfResponsibility.validators;
++package chainOfResponsibility.validators;
+ 
+-import pl.edu.pjwstk.mpr.chainOfResponsibility.Message;
++import chainOfResponsibility.Message;
+ 
+ public class MessageTextValidator extends StringEmptinessValidator {
+ 
+Index: src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/StringEmptinessValidator.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/StringEmptinessValidator.java b/src/main/java/chainOfResponsibility/validators/StringEmptinessValidator.java
+rename from src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/StringEmptinessValidator.java
+rename to src/main/java/chainOfResponsibility/validators/StringEmptinessValidator.java
+--- a/src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/StringEmptinessValidator.java	(revision 7f73337cd176f56e3f22b07e3feb51ca105f842f)
++++ b/src/main/java/chainOfResponsibility/validators/StringEmptinessValidator.java	(date 1666467044611)
+@@ -1,4 +1,4 @@
+-package pl.edu.pjwstk.mpr.chainOfResponsibility.validators;
++package chainOfResponsibility.validators;
+ 
+ abstract class StringEmptinessValidator extends BaseMessageValidatorChainComponent {
+ 
+Index: .idea/gradle.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"GradleSettings\">\r\n    <option name=\"linkedExternalProjectsSettings\">\r\n      <GradleProjectSettings>\r\n        <option name=\"distributionType\" value=\"DEFAULT_WRAPPED\" />\r\n        <option name=\"externalProjectPath\" value=\"$PROJECT_DIR$\" />\r\n        <option name=\"modules\">\r\n          <set>\r\n            <option value=\"$PROJECT_DIR$\" />\r\n          </set>\r\n        </option>\r\n      </GradleProjectSettings>\r\n    </option>\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/gradle.xml b/.idea/gradle.xml
+--- a/.idea/gradle.xml	(revision 7f73337cd176f56e3f22b07e3feb51ca105f842f)
++++ b/.idea/gradle.xml	(date 1666466970205)
+@@ -1,5 +1,6 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <project version="4">
++  <component name="GradleMigrationSettings" migrationVersion="1" />
+   <component name="GradleSettings">
+     <option name="linkedExternalProjectsSettings">
+       <GradleProjectSettings>
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"AutoImportSettings\">\r\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"e963dec4-d4d5-4a3a-9fe7-034a9a0be503\" name=\"Changes\" comment=\"\">\r\n      <change afterPath=\"$PROJECT_DIR$/.idea/compiler.xml\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/Observer/Blog.class\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/Observer/MailObserver.class\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/Observer/ObserverMain.class\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/Observer/User.class\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/fms/Building.class\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/fms/DesignSuggestion.class\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/fms/exceptions/DesignSuggestionException.class\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/fms/exceptions/WrongInvestmentStateException.class\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/fms/fmsMain.class\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/proxy_v2/Image.class\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/proxy_v2/ImageInterface.class\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/proxy_v2/ProxyImage.class\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/build/classes/java/test/pl/edu/pjwstk/mpr/fms/SimpleInvestmentTest.class\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/DemoCoR.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/MailSender.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/MailSendingException.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/Message.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/BaseMessageValidatorChainComponent.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/IMessageComponentValidator.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/MessageReceiverMailAddressCorrectnessValidator.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/MessageReceiverMailAddressValidator.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/MessageTextValidator.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/MessageTitleLenghtValidator.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/MessageTitleValidator.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/MessageValidatorException.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/StringEmptinessValidator.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/fms/Building.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/fms/DesignSuggestion.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/fms/exceptions/DesignSuggestionException.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/fms/exceptions/WrongInvestmentStateException.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/fms/fmsMain.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/observer/Blog.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/observer/MailObserver.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/observer/ObserverMain.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/observer/User.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/proxyV4/MillenniumFalcon.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/proxyV4/MillenniumFalconProxy.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/proxyV4/Pilot.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/proxyV4/Spaceship.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/proxyV4/demo.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/proxy_v2/Image.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/proxy_v2/ImageInterface.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/proxy_v2/ProxyImage.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/proxy_v2/ProxyMain.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/proxy_v3/Demo.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/proxy_v3/Kalkulator.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/proxy_v3/KalkulatorProxy.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/test/java/pl/edu/pjwstk/mpr/chainOfResponsibility/MailSenderTest.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/test/java/pl/edu/pjwstk/mpr/fms/SimpleInvestmentTest.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/test/java/pl/edu/pjwstk/mpr/observer/ObserverMainTest.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/test/java/pl/edu/pjwstk/mpr/proxy/proxyTest.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/test/java/pl/edu/pjwstk/mpr/proxy_v2/ProxyMainTest.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/test/java/pl/edu/pjwstk/mpr/proxy_v3/KalkulatorTest.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.gradle/5.2.1/executionHistory/executionHistory.bin\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.gradle/5.2.1/executionHistory/executionHistory.bin\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.gradle/5.2.1/executionHistory/executionHistory.lock\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.gradle/5.2.1/executionHistory/executionHistory.lock\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.gradle/5.2.1/fileContent/fileContent.lock\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.gradle/5.2.1/fileContent/fileContent.lock\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.gradle/5.2.1/fileHashes/fileHashes.bin\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.gradle/5.2.1/fileHashes/fileHashes.bin\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.gradle/5.2.1/fileHashes/fileHashes.lock\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.gradle/5.2.1/fileHashes/fileHashes.lock\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.gradle/5.2.1/fileHashes/resourceHashesCache.bin\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.gradle/5.2.1/fileHashes/resourceHashesCache.bin\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.gradle/5.2.1/javaCompile/classAnalysis.bin\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.gradle/5.2.1/javaCompile/classAnalysis.bin\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.gradle/5.2.1/javaCompile/jarAnalysis.bin\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.gradle/5.2.1/javaCompile/jarAnalysis.bin\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.gradle/5.2.1/javaCompile/javaCompile.lock\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.gradle/5.2.1/javaCompile/javaCompile.lock\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.gradle/5.2.1/javaCompile/taskHistory.bin\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.gradle/5.2.1/javaCompile/taskHistory.bin\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.gradle/buildOutputCleanup/cache.properties\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.gradle/buildOutputCleanup/cache.properties\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/.gitignore\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/gradle.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/gradle.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/misc.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/misc.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/sbt.xml\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/uiDesigner.xml\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/vcs.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/vcs.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/WeightedAverage.class\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/fms/Investment.class\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/fms/Investment.class\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/fms/InvestmentState.class\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/fms/InvestmentState.class\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/fms/SimpleInvestment.class\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/fms/SimpleInvestment.class\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/fms/WrongStateException.class\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/proxy/Client.class\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/proxy/Client.class\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/proxy/Directory.class\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/proxy/Directory.class\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/proxy/ProxyClient.class\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/proxy/ProxyClient.class\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/build/classes/java/test/pl/edu/pjwstk/mpr/WeightedAverageTest.class\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/build/reports/tests/test/classes/pl.edu.pjwstk.mpr.WeightedAverageTest.html\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/build/reports/tests/test/index.html\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/build/reports/tests/test/index.html\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/build/reports/tests/test/packages/pl.edu.pjwstk.mpr.html\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/build/test-results/test/TEST-pl.edu.pjwstk.mpr.WeightedAverageTest.xml\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/build/test-results/test/binary/results.bin\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/build/test-results/test/binary/results.bin\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/WeightedAverage.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/WeightedAverage.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/fms/Investment.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/fms/Investment.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/fms/InvestmentState.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/fms/InvestmentState.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/fms/SimpleInvestment.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/fms/SimpleInvestment.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/fms/WrongStateException.java\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/proxy/Client.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/proxy/Client.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/proxy/Directory.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/proxy/Directory.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/proxy/ProxyClient.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/proxy/ProxyClient.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/test/java/pl/edu/pjwstk/mpr/WeightedAverageTest.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/test/java/pl/edu/pjwstk/mpr/WeightedAverageTest.java\" afterDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"ExternalProjectsData\">\r\n    <projectState path=\"$PROJECT_DIR$\">\r\n      <ProjectState />\r\n    </projectState>\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"MarkdownSettingsMigration\">\r\n    <option name=\"stateVersion\" value=\"1\" />\r\n  </component>\r\n  <component name=\"ProjectId\" id=\"2GSjalMhU5mbFLmeJ3cdoprP819\" />\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\"><![CDATA[{\r\n  \"keyToString\": {\r\n    \"RunOnceActivity.OpenProjectViewOnStart\": \"true\",\r\n    \"RunOnceActivity.ShowReadmeOnStart\": \"true\",\r\n    \"SHARE_PROJECT_CONFIGURATION_FILES\": \"true\",\r\n    \"WebServerToolWindowFactoryState\": \"false\",\r\n    \"last_opened_file_path\": \"C:/Users/SzyDe/OneDrive/Pulpit/Studia/Semestr3/metody_programowania/mpry-zadania\",\r\n    \"node.js.detected.package.eslint\": \"true\",\r\n    \"node.js.detected.package.tslint\": \"true\",\r\n    \"node.js.selected.package.eslint\": \"(autodetect)\",\r\n    \"node.js.selected.package.tslint\": \"(autodetect)\"\r\n  }\r\n}]]></component>\r\n  <component name=\"RunManager\">\r\n    <configuration name=\"MailSenderTest\" type=\"GradleRunConfiguration\" factoryName=\"Gradle\" temporary=\"true\">\r\n      <ExternalSystemSettings>\r\n        <option name=\"executionName\" />\r\n        <option name=\"externalProjectPath\" value=\"$PROJECT_DIR$\" />\r\n        <option name=\"externalSystemIdString\" value=\"GRADLE\" />\r\n        <option name=\"scriptParameters\" value=\"\" />\r\n        <option name=\"taskDescriptions\">\r\n          <list />\r\n        </option>\r\n        <option name=\"taskNames\">\r\n          <list>\r\n            <option value=\":test\" />\r\n            <option value=\"--tests\" />\r\n            <option value=\"&quot;pl.edu.pjwstk.mpr.chainOfResponsibility.MailSenderTest&quot;\" />\r\n          </list>\r\n        </option>\r\n        <option name=\"vmOptions\" />\r\n      </ExternalSystemSettings>\r\n      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>\r\n      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>\r\n      <DebugAllEnabled>false</DebugAllEnabled>\r\n      <method v=\"2\" />\r\n    </configuration>\r\n    <recent_temporary>\r\n      <list>\r\n        <item itemvalue=\"Gradle.MailSenderTest\" />\r\n      </list>\r\n    </recent_temporary>\r\n  </component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"e963dec4-d4d5-4a3a-9fe7-034a9a0be503\" name=\"Changes\" comment=\"\" />\r\n      <created>1666388944540</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1666388944540</updated>\r\n      <workItem from=\"1666388946092\" duration=\"1248000\" />\r\n    </task>\r\n    <servers />\r\n  </component>\r\n  <component name=\"TypeScriptGeneratedFilesManager\">\r\n    <option name=\"version\" value=\"3\" />\r\n  </component>\r\n  <component name=\"Vcs.Log.Tabs.Properties\">\r\n    <option name=\"TAB_STATES\">\r\n      <map>\r\n        <entry key=\"MAIN\">\r\n          <value>\r\n            <State />\r\n          </value>\r\n        </entry>\r\n      </map>\r\n    </option>\r\n  </component>\r\n  <component name=\"com.intellij.coverage.CoverageDataManagerImpl\">\r\n    <SUITE FILE_PATH=\"coverage/zadania_java_mpr$MailSenderTest.ic\" NAME=\"MailSenderTest Coverage Results\" MODIFIED=\"1666389179652\" SOURCE_PROVIDER=\"com.intellij.coverage.DefaultCoverageFileProvider\" RUNNER=\"idea\" COVERAGE_BY_TEST_ENABLED=\"false\" COVERAGE_TRACING_ENABLED=\"false\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision 7f73337cd176f56e3f22b07e3feb51ca105f842f)
++++ b/.idea/workspace.xml	(date 1666469930482)
+@@ -5,63 +5,8 @@
+   </component>
+   <component name="ChangeListManager">
+     <list default="true" id="e963dec4-d4d5-4a3a-9fe7-034a9a0be503" name="Changes" comment="">
+-      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/Observer/Blog.class" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/Observer/MailObserver.class" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/Observer/ObserverMain.class" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/Observer/User.class" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/fms/Building.class" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/fms/DesignSuggestion.class" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/fms/exceptions/DesignSuggestionException.class" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/fms/exceptions/WrongInvestmentStateException.class" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/fms/fmsMain.class" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/proxy_v2/Image.class" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/proxy_v2/ImageInterface.class" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/proxy_v2/ProxyImage.class" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/build/classes/java/test/pl/edu/pjwstk/mpr/fms/SimpleInvestmentTest.class" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/DemoCoR.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/MailSender.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/MailSendingException.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/Message.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/BaseMessageValidatorChainComponent.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/IMessageComponentValidator.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/MessageReceiverMailAddressCorrectnessValidator.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/MessageReceiverMailAddressValidator.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/MessageTextValidator.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/MessageTitleLenghtValidator.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/MessageTitleValidator.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/MessageValidatorException.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/StringEmptinessValidator.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/fms/Building.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/fms/DesignSuggestion.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/fms/exceptions/DesignSuggestionException.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/fms/exceptions/WrongInvestmentStateException.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/fms/fmsMain.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/observer/Blog.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/observer/MailObserver.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/observer/ObserverMain.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/observer/User.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/proxyV4/MillenniumFalcon.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/proxyV4/MillenniumFalconProxy.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/proxyV4/Pilot.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/proxyV4/Spaceship.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/proxyV4/demo.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/proxy_v2/Image.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/proxy_v2/ImageInterface.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/proxy_v2/ProxyImage.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/proxy_v2/ProxyMain.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/proxy_v3/Demo.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/proxy_v3/Kalkulator.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/proxy_v3/KalkulatorProxy.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/test/java/pl/edu/pjwstk/mpr/chainOfResponsibility/MailSenderTest.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/test/java/pl/edu/pjwstk/mpr/fms/SimpleInvestmentTest.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/test/java/pl/edu/pjwstk/mpr/observer/ObserverMainTest.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/test/java/pl/edu/pjwstk/mpr/proxy/proxyTest.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/test/java/pl/edu/pjwstk/mpr/proxy_v2/ProxyMainTest.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/test/java/pl/edu/pjwstk/mpr/proxy_v3/KalkulatorTest.java" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/.gradle/5.2.1/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.2.1/executionHistory/executionHistory.bin" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/.gradle/5.2.1/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.2.1/executionHistory/executionHistory.lock" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.gradle/5.2.1/fileContent/fileContent.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.2.1/fileContent/fileContent.lock" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/.gradle/5.2.1/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.2.1/fileHashes/fileHashes.bin" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/.gradle/5.2.1/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.2.1/fileHashes/fileHashes.lock" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/.gradle/5.2.1/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.2.1/fileHashes/resourceHashesCache.bin" afterDir="false" />
+@@ -70,39 +15,104 @@
+       <change beforePath="$PROJECT_DIR$/.gradle/5.2.1/javaCompile/javaCompile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.2.1/javaCompile/javaCompile.lock" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/.gradle/5.2.1/javaCompile/taskHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.2.1/javaCompile/taskHistory.bin" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/cache.properties" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/cache.properties" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" beforeDir="false" />
+       <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/sbt.xml" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/WeightedAverage.class" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/fms/Investment.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/fms/Investment.class" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/fms/InvestmentState.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/fms/InvestmentState.class" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/fms/SimpleInvestment.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/fms/SimpleInvestment.class" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/fms/WrongStateException.class" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/proxy/Client.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/proxy/Client.class" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/proxy/Directory.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/proxy/Directory.class" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/proxy/ProxyClient.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/proxy/ProxyClient.class" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/build/classes/java/test/pl/edu/pjwstk/mpr/WeightedAverageTest.class" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/build/reports/tests/test/classes/pl.edu.pjwstk.mpr.WeightedAverageTest.html" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/build/reports/tests/test/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/reports/tests/test/index.html" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/build/reports/tests/test/packages/pl.edu.pjwstk.mpr.html" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/build/test-results/test/TEST-pl.edu.pjwstk.mpr.WeightedAverageTest.xml" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/Observer/Blog.class" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/Observer/MailObserver.class" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/Observer/ObserverMain.class" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/Observer/User.class" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/chainOfResponsibility/DemoCoR.class" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/chainOfResponsibility/MailSender.class" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/chainOfResponsibility/MailSendingException.class" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/chainOfResponsibility/Message.class" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/BaseMessageValidatorChainComponent.class" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/IMessageComponentValidator.class" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/MessageReceiverMailAddressCorrectnessValidator.class" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/MessageReceiverMailAddressValidator.class" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/MessageTextValidator.class" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/MessageTitleLenghtValidator.class" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/MessageTitleValidator.class" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/MessageValidatorException.class" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/StringEmptinessValidator.class" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/fms/Building.class" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/fms/DesignSuggestion.class" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/fms/Investment.class" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/fms/InvestmentState.class" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/fms/SimpleInvestment.class" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/fms/exceptions/DesignSuggestionException.class" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/fms/exceptions/WrongInvestmentStateException.class" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/fms/fmsMain.class" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/proxy/Client.class" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/proxy/Directory.class" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/proxy/ProxyClient.class" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/proxy/User.class" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/proxy/startProxy.class" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/proxyV4/MillenniumFalcon.class" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/proxyV4/MillenniumFalconProxy.class" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/proxyV4/Pilot.class" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/proxyV4/Spaceship.class" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/proxyV4/demo.class" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/proxy_v2/Image.class" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/proxy_v2/ImageInterface.class" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/proxy_v2/ProxyImage.class" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/proxy_v3/Demo.class" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/proxy_v3/Kalkulator.class" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/proxy_v3/KalkulatorProxy.class" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/build/classes/java/test/pl/edu/pjwstk/mpr/chainOfResponsibility/MailSenderTest.class" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/build/classes/java/test/pl/edu/pjwstk/mpr/fms/SimpleInvestmentTest.class" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/build/classes/java/test/pl/edu/pjwstk/mpr/proxy/proxyTest.class" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/build/classes/java/test/pl/edu/pjwstk/mpr/proxy_v3/KalkulatorTest.class" beforeDir="false" />
+       <change beforePath="$PROJECT_DIR$/build/test-results/test/binary/results.bin" beforeDir="false" afterPath="$PROJECT_DIR$/build/test-results/test/binary/results.bin" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/WeightedAverage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/WeightedAverage.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/fms/Investment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/fms/Investment.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/fms/InvestmentState.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/fms/InvestmentState.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/fms/SimpleInvestment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/fms/SimpleInvestment.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/fms/WrongStateException.java" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/proxy/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/proxy/Client.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/proxy/Directory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/proxy/Directory.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/proxy/ProxyClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/proxy/ProxyClient.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/test/java/pl/edu/pjwstk/mpr/WeightedAverageTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/pl/edu/pjwstk/mpr/WeightedAverageTest.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/WeightedAverage.java" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/DemoCoR.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/chainOfResponsibility/DemoCoR.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/MailSender.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/chainOfResponsibility/MailSender.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/MailSendingException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/chainOfResponsibility/MailSendingException.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/Message.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/chainOfResponsibility/Message.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/BaseMessageValidatorChainComponent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/chainOfResponsibility/validators/BaseMessageValidatorChainComponent.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/IMessageComponentValidator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/chainOfResponsibility/validators/IMessageComponentValidator.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/MessageReceiverMailAddressCorrectnessValidator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/chainOfResponsibility/validators/MessageReceiverMailAddressCorrectnessValidator.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/MessageReceiverMailAddressValidator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/chainOfResponsibility/validators/MessageReceiverMailAddressValidator.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/MessageTextValidator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/chainOfResponsibility/validators/MessageTextValidator.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/MessageTitleLenghtValidator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/chainOfResponsibility/validators/MessageTitleLenghtValidator.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/MessageTitleValidator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/chainOfResponsibility/validators/MessageTitleValidator.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/MessageValidatorException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/chainOfResponsibility/validators/MessageValidatorException.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/StringEmptinessValidator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/chainOfResponsibility/validators/StringEmptinessValidator.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/fms/Building.java" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/fms/DesignSuggestion.java" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/fms/Investment.java" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/fms/InvestmentState.java" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/fms/SimpleInvestment.java" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/fms/exceptions/DesignSuggestionException.java" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/fms/exceptions/WrongInvestmentStateException.java" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/fms/fmsMain.java" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/observer/Blog.java" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/observer/MailObserver.java" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/observer/ObserverMain.java" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/observer/User.java" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/proxy/Client.java" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/proxy/Directory.java" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/proxy/ProxyClient.java" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/proxy/User.java" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/proxy/startProxy.java" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/proxyV4/MillenniumFalcon.java" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/proxyV4/MillenniumFalconProxy.java" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/proxyV4/Pilot.java" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/proxyV4/Spaceship.java" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/proxyV4/demo.java" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/proxy_v2/Image.java" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/proxy_v2/ImageInterface.java" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/proxy_v2/ProxyImage.java" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/proxy_v2/ProxyMain.java" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/proxy_v3/Demo.java" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/proxy_v3/Kalkulator.java" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/proxy_v3/KalkulatorProxy.java" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/test/java/pl/edu/pjwstk/mpr/WeightedAverageTest.java" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/test/java/pl/edu/pjwstk/mpr/chainOfResponsibility/MailSenderTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/chainOfResponsibility/MailSenderTest.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/test/java/pl/edu/pjwstk/mpr/fms/SimpleInvestmentTest.java" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/test/java/pl/edu/pjwstk/mpr/observer/ObserverMainTest.java" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/test/java/pl/edu/pjwstk/mpr/proxy/proxyTest.java" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/test/java/pl/edu/pjwstk/mpr/proxy_v2/ProxyMainTest.java" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/test/java/pl/edu/pjwstk/mpr/proxy_v3/KalkulatorTest.java" beforeDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+@@ -121,24 +131,52 @@
+     <option name="stateVersion" value="1" />
+   </component>
+   <component name="ProjectId" id="2GSjalMhU5mbFLmeJ3cdoprP819" />
++  <component name="ProjectLevelVcsManager">
++    <ConfirmationsSetting value="2" id="Add" />
++  </component>
+   <component name="ProjectViewState">
+     <option name="hideEmptyMiddlePackages" value="true" />
+     <option name="showLibraryContents" value="true" />
+   </component>
+-  <component name="PropertiesComponent"><![CDATA[{
+-  "keyToString": {
+-    "RunOnceActivity.OpenProjectViewOnStart": "true",
+-    "RunOnceActivity.ShowReadmeOnStart": "true",
+-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+-    "WebServerToolWindowFactoryState": "false",
+-    "last_opened_file_path": "C:/Users/SzyDe/OneDrive/Pulpit/Studia/Semestr3/metody_programowania/mpry-zadania",
+-    "node.js.detected.package.eslint": "true",
+-    "node.js.detected.package.tslint": "true",
+-    "node.js.selected.package.eslint": "(autodetect)",
+-    "node.js.selected.package.tslint": "(autodetect)"
++  <component name="PropertiesComponent">{
++  &quot;keyToString&quot;: {
++    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
++    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
++    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
++    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
++    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
++    &quot;last_opened_file_path&quot;: &quot;C:/Users/SzyDe/OneDrive/Pulpit/Studia/Semestr3/metody_programowania/mpry-zadania&quot;,
++    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
++    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
++    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
++    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
++    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;
+   }
+-}]]></component>
+-  <component name="RunManager">
++}</component>
++  <component name="RunManager" selected="Gradle.MailSenderTest (1)">
++    <configuration name="MailSenderTest (1)" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
++      <ExternalSystemSettings>
++        <option name="executionName" />
++        <option name="externalProjectPath" value="$PROJECT_DIR$" />
++        <option name="externalSystemIdString" value="GRADLE" />
++        <option name="scriptParameters" value="" />
++        <option name="taskDescriptions">
++          <list />
++        </option>
++        <option name="taskNames">
++          <list>
++            <option value=":test" />
++            <option value="--tests" />
++            <option value="&quot;chainOfResponsibility.MailSenderTest&quot;" />
++          </list>
++        </option>
++        <option name="vmOptions" />
++      </ExternalSystemSettings>
++      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
++      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
++      <DebugAllEnabled>false</DebugAllEnabled>
++      <method v="2" />
++    </configuration>
+     <configuration name="MailSenderTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+       <ExternalSystemSettings>
+         <option name="executionName" />
+@@ -164,6 +202,7 @@
+     </configuration>
+     <recent_temporary>
+       <list>
++        <item itemvalue="Gradle.MailSenderTest (1)" />
+         <item itemvalue="Gradle.MailSenderTest" />
+       </list>
+     </recent_temporary>
+@@ -176,7 +215,8 @@
+       <option name="number" value="Default" />
+       <option name="presentableId" value="Default" />
+       <updated>1666388944540</updated>
+-      <workItem from="1666388946092" duration="1248000" />
++      <workItem from="1666388946092" duration="1621000" />
++      <workItem from="1666466865191" duration="1228000" />
+     </task>
+     <servers />
+   </component>
+@@ -194,7 +234,10 @@
+       </map>
+     </option>
+   </component>
++  <component name="VcsManagerConfiguration">
++    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
++  </component>
+   <component name="com.intellij.coverage.CoverageDataManagerImpl">
+-    <SUITE FILE_PATH="coverage/zadania_java_mpr$MailSenderTest.ic" NAME="MailSenderTest Coverage Results" MODIFIED="1666389179652" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
++    <SUITE FILE_PATH="coverage/zadania_java_mpr$MailSenderTest.ic" NAME="MailSenderTest Coverage Results" MODIFIED="1666469826254" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+   </component>
+ </project>
+\ No newline at end of file
+Index: src/test/java/pl/edu/pjwstk/mpr/chainOfResponsibility/MailSenderTest.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/test/java/pl/edu/pjwstk/mpr/chainOfResponsibility/MailSenderTest.java b/src/test/java/chainOfResponsibility/MailSenderTest.java
+rename from src/test/java/pl/edu/pjwstk/mpr/chainOfResponsibility/MailSenderTest.java
+rename to src/test/java/chainOfResponsibility/MailSenderTest.java
+--- a/src/test/java/pl/edu/pjwstk/mpr/chainOfResponsibility/MailSenderTest.java	(revision 7f73337cd176f56e3f22b07e3feb51ca105f842f)
++++ b/src/test/java/chainOfResponsibility/MailSenderTest.java	(date 1666467168124)
+@@ -1,15 +1,15 @@
+-package pl.edu.pjwstk.mpr.chainOfResponsibility;
++package chainOfResponsibility;
+ 
+-
++import chainOfResponsibility.validators.MessageValidatorException;
+ import org.junit.After;
+ import org.junit.Before;
+ import org.junit.Test;
+-import pl.edu.pjwstk.mpr.chainOfResponsibility.validators.MessageValidatorException;
+ 
+ import java.io.ByteArrayOutputStream;
+ import java.io.PrintStream;
+ 
+-import static org.assertj.core.api.AssertionsForClassTypes.*;
++import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
++import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
+ 
+ public class MailSenderTest {
+ 
+Index: src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/MailSendingException.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/MailSendingException.java b/src/main/java/chainOfResponsibility/MailSendingException.java
+rename from src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/MailSendingException.java
+rename to src/main/java/chainOfResponsibility/MailSendingException.java
+--- a/src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/MailSendingException.java	(revision 7f73337cd176f56e3f22b07e3feb51ca105f842f)
++++ b/src/main/java/chainOfResponsibility/MailSendingException.java	(date 1666467044647)
+@@ -1,4 +1,4 @@
+-package pl.edu.pjwstk.mpr.chainOfResponsibility;
++package chainOfResponsibility;
+ 
+ public class MailSendingException extends RuntimeException {
+ 
+Index: src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/MailSender.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/MailSender.java b/src/main/java/chainOfResponsibility/MailSender.java
+rename from src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/MailSender.java
+rename to src/main/java/chainOfResponsibility/MailSender.java
+--- a/src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/MailSender.java	(revision 7f73337cd176f56e3f22b07e3feb51ca105f842f)
++++ b/src/main/java/chainOfResponsibility/MailSender.java	(date 1666469925088)
+@@ -1,6 +1,6 @@
+-package pl.edu.pjwstk.mpr.chainOfResponsibility;
++package chainOfResponsibility;
+ 
+-import pl.edu.pjwstk.mpr.chainOfResponsibility.validators.*;
++import chainOfResponsibility.validators.*;
+ 
+ public class MailSender {
+ 
+@@ -28,7 +28,7 @@
+         try {
+             var mail = new Message(title, message, receiverAddress);
+             chainOfValidators.validate(mail);
+-            System.out.println("Mail sent correctly!");
++            System.out.print("Mail sent correctly!");
+         } catch (MessageValidatorException exception) {
+             throw new MailSendingException("Couldn't send the mail because validation error occurred: ", exception);
+         }
+Index: src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/Message.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/Message.java b/src/main/java/chainOfResponsibility/Message.java
+rename from src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/Message.java
+rename to src/main/java/chainOfResponsibility/Message.java
+--- a/src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/Message.java	(revision 7f73337cd176f56e3f22b07e3feb51ca105f842f)
++++ b/src/main/java/chainOfResponsibility/Message.java	(date 1666467044659)
+@@ -1,4 +1,4 @@
+-package pl.edu.pjwstk.mpr.chainOfResponsibility;
++package chainOfResponsibility;
+ 
+ public class Message {
+ 
+Index: src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/DemoCoR.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/DemoCoR.java b/src/main/java/chainOfResponsibility/DemoCoR.java
+rename from src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/DemoCoR.java
+rename to src/main/java/chainOfResponsibility/DemoCoR.java
+--- a/src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/DemoCoR.java	(revision 7f73337cd176f56e3f22b07e3feb51ca105f842f)
++++ b/src/main/java/chainOfResponsibility/DemoCoR.java	(date 1666467044622)
+@@ -1,4 +1,4 @@
+-package pl.edu.pjwstk.mpr.chainOfResponsibility;
++package chainOfResponsibility;
+ 
+ public class DemoCoR {
+     public static void main(String[] args) {
+Index: src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/MessageTitleValidator.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/MessageTitleValidator.java b/src/main/java/chainOfResponsibility/validators/MessageTitleValidator.java
+rename from src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/MessageTitleValidator.java
+rename to src/main/java/chainOfResponsibility/validators/MessageTitleValidator.java
+--- a/src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/MessageTitleValidator.java	(revision 7f73337cd176f56e3f22b07e3feb51ca105f842f)
++++ b/src/main/java/chainOfResponsibility/validators/MessageTitleValidator.java	(date 1666467044634)
+@@ -1,6 +1,6 @@
+-package pl.edu.pjwstk.mpr.chainOfResponsibility.validators;
++package chainOfResponsibility.validators;
+ 
+-import pl.edu.pjwstk.mpr.chainOfResponsibility.Message;
++import chainOfResponsibility.Message;
+ 
+ public class MessageTitleValidator extends StringEmptinessValidator{
+ 
+Index: src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/MessageReceiverMailAddressValidator.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/MessageReceiverMailAddressValidator.java b/src/main/java/chainOfResponsibility/validators/MessageReceiverMailAddressValidator.java
+rename from src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/MessageReceiverMailAddressValidator.java
+rename to src/main/java/chainOfResponsibility/validators/MessageReceiverMailAddressValidator.java
+--- a/src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/MessageReceiverMailAddressValidator.java	(revision 7f73337cd176f56e3f22b07e3feb51ca105f842f)
++++ b/src/main/java/chainOfResponsibility/validators/MessageReceiverMailAddressValidator.java	(date 1666467044765)
+@@ -1,6 +1,6 @@
+-package pl.edu.pjwstk.mpr.chainOfResponsibility.validators;
++package chainOfResponsibility.validators;
+ 
+-import pl.edu.pjwstk.mpr.chainOfResponsibility.Message;
++import chainOfResponsibility.Message;
+ 
+ public class MessageReceiverMailAddressValidator extends StringEmptinessValidator {
+ 

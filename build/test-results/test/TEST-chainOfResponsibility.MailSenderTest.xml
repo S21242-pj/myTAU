@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="chainOfResponsibility.MailSenderTest" tests="16" skipped="0" failures="0" errors="0" timestamp="2022-10-22T20:18:46" hostname="RaccoonGarbage" time="0.091">
+  <properties/>
+  <testcase name="can_not_send_mail_with_wrong_receiver_address_case_1" classname="chainOfResponsibility.MailSenderTest" time="0.062"/>
+  <testcase name="can_not_send_mail_with_wrong_receiver_address_case_2" classname="chainOfResponsibility.MailSenderTest" time="0.002"/>
+  <testcase name="can_not_send_mail_with_wrong_receiver_address_case_3" classname="chainOfResponsibility.MailSenderTest" time="0.002"/>
+  <testcase name="can_not_send_mail_with_wrong_receiver_address_case_4" classname="chainOfResponsibility.MailSenderTest" time="0.001"/>
+  <testcase name="can_create_mail_sender" classname="chainOfResponsibility.MailSenderTest" time="0.0"/>
+  <testcase name="can_not_send_mail_with_no_title_case_1" classname="chainOfResponsibility.MailSenderTest" time="0.003"/>
+  <testcase name="can_not_send_mail_with_no_title_case_2" classname="chainOfResponsibility.MailSenderTest" time="0.002"/>
+  <testcase name="can_not_send_mail_with_no_title_case_3" classname="chainOfResponsibility.MailSenderTest" time="0.002"/>
+  <testcase name="can_not_send_mail_with_too_long_title" classname="chainOfResponsibility.MailSenderTest" time="0.001"/>
+  <testcase name="can_send_correctly_filled_mail" classname="chainOfResponsibility.MailSenderTest" time="0.004"/>
+  <testcase name="can_not_send_mail_with_no_receiver_address_case_1" classname="chainOfResponsibility.MailSenderTest" time="0.001"/>
+  <testcase name="can_not_send_mail_with_no_receiver_address_case_2" classname="chainOfResponsibility.MailSenderTest" time="0.002"/>
+  <testcase name="can_not_send_mail_with_no_receiver_address_case_3" classname="chainOfResponsibility.MailSenderTest" time="0.001"/>
+  <testcase name="can_not_send_mail_with_no_message_text_case_1" classname="chainOfResponsibility.MailSenderTest" time="0.002"/>
+  <testcase name="can_not_send_mail_with_no_message_text_case_2" classname="chainOfResponsibility.MailSenderTest" time="0.002"/>
+  <testcase name="can_not_send_mail_with_no_message_text_case_3" classname="chainOfResponsibility.MailSenderTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
