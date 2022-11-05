@@ -4,115 +4,43 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e963dec4-d4d5-4a3a-9fe7-034a9a0be503" name="Changes" comment="">
+    <list default="true" id="9b488059-bbdd-4fec-b62e-db6ce891fe62" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.gradle/5.2.1/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.2.1/executionHistory/executionHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/5.2.1/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.2.1/executionHistory/executionHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/5.2.1/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.2.1/fileHashes/fileHashes.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/5.2.1/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.2.1/fileHashes/fileHashes.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/5.2.1/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.2.1/fileHashes/resourceHashesCache.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/5.2.1/javaCompile/classAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.2.1/javaCompile/classAnalysis.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/5.2.1/javaCompile/jarAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.2.1/javaCompile/jarAnalysis.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/5.2.1/javaCompile/javaCompile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.2.1/javaCompile/javaCompile.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/5.2.1/javaCompile/taskHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.2.1/javaCompile/taskHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.name" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_22_10_2022_22_19_[Changes]/buildOutputCleanup.lock" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_22_10_2022_22_19_[Changes]/classAnalysis.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_22_10_2022_22_19_[Changes]/executionHistory.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_22_10_2022_22_19_[Changes]/executionHistory.lock" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_22_10_2022_22_19_[Changes]/fileHashes.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_22_10_2022_22_19_[Changes]/fileHashes.lock" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_22_10_2022_22_19_[Changes]/jarAnalysis.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_22_10_2022_22_19_[Changes]/javaCompile.lock" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_22_10_2022_22_19_[Changes]/resourceHashesCache.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_22_10_2022_22_19_[Changes]/results.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_22_10_2022_22_19_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_22_10_2022_22_19_[Changes]/taskHistory.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_22_10_2022_22_19__Changes_.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/Observer/Blog.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/Observer/MailObserver.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/Observer/ObserverMain.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/Observer/User.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/chainOfResponsibility/DemoCoR.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/chainOfResponsibility/MailSender.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/chainOfResponsibility/MailSendingException.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/chainOfResponsibility/Message.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/BaseMessageValidatorChainComponent.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/IMessageComponentValidator.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/MessageReceiverMailAddressCorrectnessValidator.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/MessageReceiverMailAddressValidator.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/MessageTextValidator.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/MessageTitleLenghtValidator.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/MessageTitleValidator.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/MessageValidatorException.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/StringEmptinessValidator.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/fms/Building.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/fms/DesignSuggestion.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/fms/Investment.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/fms/InvestmentState.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/fms/SimpleInvestment.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/fms/exceptions/DesignSuggestionException.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/fms/exceptions/WrongInvestmentStateException.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/fms/fmsMain.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/proxy/Client.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/proxy/Directory.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/proxy/ProxyClient.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/proxy/User.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/proxy/startProxy.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/proxyV4/MillenniumFalcon.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/proxyV4/MillenniumFalconProxy.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/proxyV4/Pilot.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/proxyV4/Spaceship.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/proxyV4/demo.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/proxy_v2/Image.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/proxy_v2/ImageInterface.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/proxy_v2/ProxyImage.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/proxy_v3/Demo.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/proxy_v3/Kalkulator.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/pl/edu/pjwstk/mpr/proxy_v3/KalkulatorProxy.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/test/pl/edu/pjwstk/mpr/chainOfResponsibility/MailSenderTest.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/test/pl/edu/pjwstk/mpr/fms/SimpleInvestmentTest.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/test/pl/edu/pjwstk/mpr/proxy/proxyTest.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/test/pl/edu/pjwstk/mpr/proxy_v3/KalkulatorTest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/reports/tests/test/classes/chainOfResponsibility.MailSenderTest.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/reports/tests/test/classes/chainOfResponsibility.MailSenderTest.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/reports/tests/test/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/reports/tests/test/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/reports/tests/test/packages/chainOfResponsibility.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/reports/tests/test/packages/chainOfResponsibility.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/test-results/test/TEST-chainOfResponsibility.MailSenderTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/build/test-results/test/TEST-chainOfResponsibility.MailSenderTest.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/test-results/test/binary/results.bin" beforeDir="false" afterPath="$PROJECT_DIR$/build/test-results/test/binary/results.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/WeightedAverage.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/DemoCoR.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/chainOfResponsibility/DemoCoR.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/MailSender.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/chainOfResponsibility/MailSender.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/MailSendingException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/chainOfResponsibility/MailSendingException.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/Message.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/chainOfResponsibility/Message.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/BaseMessageValidatorChainComponent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/chainOfResponsibility/validators/BaseMessageValidatorChainComponent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/IMessageComponentValidator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/chainOfResponsibility/validators/IMessageComponentValidator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/MessageReceiverMailAddressCorrectnessValidator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/chainOfResponsibility/validators/MessageReceiverMailAddressCorrectnessValidator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/MessageReceiverMailAddressValidator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/chainOfResponsibility/validators/MessageReceiverMailAddressValidator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/MessageTextValidator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/chainOfResponsibility/validators/MessageTextValidator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/MessageTitleLenghtValidator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/chainOfResponsibility/validators/MessageTitleLenghtValidator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/MessageTitleValidator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/chainOfResponsibility/validators/MessageTitleValidator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/MessageValidatorException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/chainOfResponsibility/validators/MessageValidatorException.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/chainOfResponsibility/validators/StringEmptinessValidator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/chainOfResponsibility/validators/StringEmptinessValidator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/fms/Building.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/fms/DesignSuggestion.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/fms/Investment.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/fms/InvestmentState.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/fms/SimpleInvestment.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/fms/exceptions/DesignSuggestionException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/fms/exceptions/WrongInvestmentStateException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/fms/fmsMain.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/observer/Blog.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/observer/MailObserver.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/observer/ObserverMain.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/observer/User.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/proxy/Client.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/proxy/Directory.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/proxy/ProxyClient.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/proxy/User.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/proxy/startProxy.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/proxyV4/MillenniumFalcon.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/proxyV4/MillenniumFalconProxy.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/proxyV4/Pilot.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/proxyV4/Spaceship.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/proxyV4/demo.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/proxy_v2/Image.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/proxy_v2/ImageInterface.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/proxy_v2/ProxyImage.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/proxy_v2/ProxyMain.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/proxy_v3/Demo.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/proxy_v3/Kalkulator.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/edu/pjwstk/mpr/proxy_v3/KalkulatorProxy.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/pl/edu/pjwstk/mpr/WeightedAverageTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/pl/edu/pjwstk/mpr/chainOfResponsibility/MailSenderTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/chainOfResponsibility/MailSenderTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/pl/edu/pjwstk/mpr/fms/SimpleInvestmentTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/pl/edu/pjwstk/mpr/observer/ObserverMainTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/pl/edu/pjwstk/mpr/proxy/proxyTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/pl/edu/pjwstk/mpr/proxy_v2/ProxyMainTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/pl/edu/pjwstk/mpr/proxy_v3/KalkulatorTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/settings.gradle" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -130,93 +58,34 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
-  <component name="ProjectId" id="2GSjalMhU5mbFLmeJ3cdoprP819" />
-  <component name="ProjectLevelVcsManager">
-    <ConfirmationsSetting value="2" id="Add" />
-  </component>
+  <component name="ProjectId" id="2H8gnrtk4u1KGu6RKtRKLQuJzB4" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/SzyDe/OneDrive/Pulpit/Studia/Semestr3/metody_programowania/mpry-zadania&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "C:/Users/SzyDe/OneDrive/Pulpit/TAU",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)"
   }
-}</component>
-  <component name="RunManager" selected="Gradle.MailSenderTest (1)">
-    <configuration name="MailSenderTest (1)" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value=":test" />
-            <option value="--tests" />
-            <option value="&quot;chainOfResponsibility.MailSenderTest&quot;" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <method v="2" />
-    </configuration>
-    <configuration name="MailSenderTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value=":test" />
-            <option value="--tests" />
-            <option value="&quot;pl.edu.pjwstk.mpr.chainOfResponsibility.MailSenderTest&quot;" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <method v="2" />
-    </configuration>
-    <recent_temporary>
-      <list>
-        <item itemvalue="Gradle.MailSenderTest (1)" />
-        <item itemvalue="Gradle.MailSenderTest" />
-      </list>
-    </recent_temporary>
-  </component>
+}]]></component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="e963dec4-d4d5-4a3a-9fe7-034a9a0be503" name="Changes" comment="" />
-      <created>1666388944540</created>
+      <changelist id="9b488059-bbdd-4fec-b62e-db6ce891fe62" name="Changes" comment="" />
+      <created>1667672294624</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1666388944540</updated>
-      <workItem from="1666388946092" duration="1621000" />
-      <workItem from="1666466865191" duration="1228000" />
+      <updated>1667672294624</updated>
+      <workItem from="1667672295962" duration="341000" />
+      <workItem from="1667672721904" duration="507000" />
+      <workItem from="1667673298087" duration="12000" />
     </task>
     <servers />
   </component>
@@ -233,11 +102,5 @@
         </entry>
       </map>
     </option>
-  </component>
-  <component name="VcsManagerConfiguration">
-    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-  </component>
-  <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/zadania_java_mpr$MailSenderTest.ic" NAME="MailSenderTest Coverage Results" MODIFIED="1666469826254" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
 </project>
