@@ -13,5 +13,13 @@ https://github.com/S21242-pj/TAU_1
 
 W TAU_2 znajduję się projekt używający wzorca projektowego chain of resposibility napisany z użyciem Maven-a, zamiast jak w TAU_1 Gradle-a.
 
-
 Testy przechodzą 16/16
+
+### TAU_3 - Laborki 3
+
+FirstScenario:
+1. Test resetu hasła na https://jbzd.com.pl
+
+SecondScenarios:
+1. Test strony https://hearthstone-decks.net/, i wyszukiwania konkrentej tali do gry, od konkretnego gracza.
+2. Test strony https://jbzd.com.pl, szukanie najlepszych memów z poczekalni z ostatnich 24h.
