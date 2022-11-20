@@ -23,3 +23,8 @@ FirstScenario:
 SecondScenarios:
 1. Test strony https://hearthstone-decks.net/, i wyszukiwania konkrentej tali do gry, od konkretnego gracza.
 2. Test strony https://jbzd.com.pl, szukanie najlepszych memów z poczekalni z ostatnich 24h.
+
+### TAU_4 - Laborki 4
+
+1. Zrobione zadanie pierwsze
+2. (dla mnie to było opcjonalne, za obecność) - w testach zaznaczone mock vs stub
