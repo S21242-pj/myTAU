@@ -60,22 +60,30 @@ public class Game {
             // move player based on input
             switch (input) {
                 case 'w':
-                    if (playerY > 0 && board[playerY - 1][playerX] != OBSTACLE) {
+                    if (playerY == 0) {
+                        System.out.println("You cannot move there !!!");
+                    } else if (board[playerY - 1][playerX] != OBSTACLE) {
                         playerY--;
                     }
                     break;
                 case 'a':
-                    if (playerX > 0 && board[playerY][playerX - 1] != OBSTACLE) {
+                    if (playerX == 0) {
+                        System.out.println("You cannot move there !!!");
+                    } else if (board[playerY][playerX - 1] != OBSTACLE) {
                         playerX--;
                     }
                     break;
                 case 's':
-                    if (playerY < BOARD_HEIGHT - 1 && board[playerY + 1][playerX] != OBSTACLE) {
+                    if (playerY == 4){
+                        System.out.println("You cannot move there !!!");
+                    } else if (board[playerY + 1][playerX] != OBSTACLE) {
                         playerY++;
                     }
                     break;
                 case 'd':
-                    if (playerX < BOARD_WIDTH - 1 && board[playerY][playerX + 1] != OBSTACLE) {
+                    if (playerX == 4){
+                        System.out.println("You cannot move there !!!");
+                    } else if (board[playerY][playerX + 1] != OBSTACLE) {
                         playerX++;
                     }
                     break;
@@ -84,6 +92,12 @@ public class Game {
                     break;
                 default:
                     break;
+            }
+
+            // check if player is out of bounds
+            if (playerX < 0 || playerX >= BOARD_WIDTH || playerY < 0 || playerY >= BOARD_HEIGHT) {
+                System.out.println("You cannot move there.");
+                continue;
             }
 
             // check if player won
