@@ -109,6 +109,9 @@ public class Game {
             // print updated board
             printBoard(board, playerX, playerY);
         }
+
+
+
     }
 
     public static void printBoard ( char[][] board, int playerX, int playerY) {
@@ -126,4 +129,7 @@ public class Game {
         }
         System.out.println("Use arrow keys to move. Press \"q\" to quit.");
     }
+
+
+
 }
