@@ -31,6 +31,4 @@ skip
 
 ### TAU_6 - Laborki 6
 Gra + Testy, poniżej rezultat wykonania wszystkich testów
-https://github.com/S21242-pj/myTAU/blob/master/TAU_6/TestsResult.png?raw=true
-
 ![Alt text](TAU_6/TestsResult.png)
