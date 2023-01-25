@@ -31,4 +31,5 @@ skip
 
 ### TAU_6 - Laborki 6
 Gra + Testy, poniżej rezultat wykonania wszystkich testów
+
 ![Alt text](TAU_6/TestsResult.png)
