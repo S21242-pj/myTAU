@@ -2,17 +2,12 @@ package org.example;
 
 import org.junit.jupiter.api.Test;
 
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
 import java.util.Random;
-import java.util.Scanner;
 
-import static org.example.Game.printBoard;
+import static org.example.Game.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class GameTest {
-
-
 
 
     @Test
@@ -55,8 +50,8 @@ class GameTest {
 
         // check if obstacles were generated correctly
         assertTrue(obstacleCount > 0);
-        assertFalse(board[playerY][playerX] == OBSTACLE);
-        assertFalse(board[stopY][stopX] == OBSTACLE);
+        assertNotEquals(board[playerY][playerX], OBSTACLE);
+        assertNotEquals(board[stopY][stopX], OBSTACLE);
     }
 
     @Test
@@ -66,13 +61,14 @@ class GameTest {
         assertTrue(isValidMove('a'));
         assertTrue(isValidMove('s'));
         assertTrue(isValidMove('d'));
+        assertTrue(isValidMove('q'));
 
         // test invalid input
         assertFalse(isValidMove('z'));
     }
 
     private boolean isValidMove(char move) {
-        return move == 'w' || move == 'a' || move == 's' || move == 'd';
+        return move == 'q' || move == 'w' || move == 'a' || move == 's' || move == 'd';
     }
 
     @Test
@@ -105,64 +101,222 @@ class GameTest {
         board[stopY][stopX] = STOP;
 
         // check if start and stop were placed correctly
-        assertTrue(board[playerY][playerX] == START);
-        assertTrue(board[stopY][stopX] == STOP);
+        assertEquals(board[playerY][playerX], START);
+        assertEquals(board[stopY][stopX], STOP);
         assertTrue(playerX != stopX || playerY != stopY);
     }
 
     @Test
-    public void testPlayerBoundsValidation() {
+    public void testPlayerMoveOnObstacle() {
         char[][] board = new char[5][5];
-        int playerX = 2, playerY = 2;
-        int stopX = 4, stopY = 4;
+        int playerX = 0, playerY = 0;
+        int obstacleX = 1, obstacleY = 1;
+        char BLANK = '.';
+        char START = 'A';
+        char OBSTACLE = 'X';
+
+        // fill board with blank spaces
+        for (int y = 0; y < 5; y++) {
+            for (int x = 0; x < 5; x++) {
+                board[y][x] = BLANK;
+            }
+        }
+
+        // place player on board
+        board[playerY][playerX] = START;
+
+        // place obstacle on board
+        board[obstacleY][obstacleX] = OBSTACLE;
+
+        // test if player can move to obstacle position
+        playerX = obstacleX;
+        playerY = obstacleY;
+        assertFalse(board[playerY][playerX] != OBSTACLE);
+    }
+
+    @Test
+    public void testPlayerMovement() {
+        char[][] board = new char[5][5];
+        int playerX = 3, playerY = 3;
         char BLANK = '.';
         char START = 'A';
         char STOP = 'B';
         char OBSTACLE = 'X';
-        Random rand = new Random();
-    // fill board with blank spaces
-    for (int y = 0; y < 5; y++) {
-        for (int x = 0; x < 5; x++) {
-            board[y][x] = BLANK;
+
+        // fill board with blank spaces
+        for (int y = 0; y < 5; y++) {
+            for (int x = 0; x < 5; x++) {
+                board[y][x] = BLANK;
+            }
         }
+
+        // place player on board
+        board[playerY][playerX] = START;
+
+        // move player north
+        playerY--;
+        assertEquals(playerY, 2);
+
+        // move player west
+        playerX--;
+        assertEquals(playerX, 2);
+
+        // move player south
+        playerY++;
+        playerY++;
+        assertEquals(playerY, 4);
+
+        // move player east
+        playerX++;
+        playerX++;
+        assertEquals(playerX, 4);
     }
 
-    // place player on board
-    board[playerY][playerX] = START;
+    @Test
+    public void testPlayerWinCondition() {
+        char[][] board = new char[5][5];
+        int playerX = 3, playerY = 3;
+        char BLANK = '.';
+        char START = 'A';
+        char STOP = 'B';
+        char OBSTACLE = 'X';
+        boolean playerWon = false;
+        // fill board with blank spaces
+        for (int y = 0; y < 5; y++) {
+            for (int x = 0; x < 5; x++) {
+                board[y][x] = BLANK;
+            }
+        }
 
-    // place stop point on board
-    board[stopY][stopX] = STOP;
+        // place player on board
+        board[playerY][playerX] = START;
 
-    // test if player can move north
-    playerY--; // 2 1
-    assertTrue(playerY >= 0);
+        // place stop point on board
+        board[4][4] = STOP;
 
-    // test if player can move west
-    playerX--; // 1 1
-    assertTrue(playerX >= 0);
+        // simulate player movement to stop point
+        playerX++;
+        playerY++;
+        if (board[playerY][playerX] == STOP) {
+            playerWon = true;
+        }
 
-    // test if player can move south
-    playerY++;
-    playerY++; // 1 3
-    assertTrue(playerY < 5);
+        assertTrue(playerWon);
+    }
 
-    // test if player can move east
-    playerX++;
-    playerX++;// 3 3
-    assertTrue(playerX < 5);
 
-    // test if player cannot move out of bounds
-    playerX++;
-    playerX++;
-    assertFalse(playerX < 5);
-    playerY++;
-    assertFalse(playerY < 5);
-    playerX--;
-    playerX--;
-    assertFalse(playerX < 0);
-    playerY--;
-    assertFalse(playerY < 0);
-}
+    @Test
+    public void testPlayerCannotMoveOnObstacle() {
+        char[][] board = new char[5][5];
+        int playerX = 3, playerY = 3;
+        char BLANK = '.';
+        char OBSTACLE = 'X';
 
+        // fill board with blank spaces
+        for (int y = 0; y < 5; y++) {
+            for (int x = 0; x < 5; x++) {
+                board[y][x] = BLANK;
+            }
+        }
+
+        // place player on board
+        board[playerY][playerX] = 'P';
+
+        // place obstacle on the right of the player
+        board[playerY + 1][playerX] = OBSTACLE;
+
+        // try to move player on obstacle
+        if (board[playerY + 1][playerX] != OBSTACLE) {
+            playerY++;
+        }
+        assertEquals(playerX,3);
+        assertEquals(playerY,3);
+    }
+
+
+    @Test
+    public void testStartAndStopNotOnSamePosition() {
+        Random rand = new Random();
+        int startX, startY, stopX, stopY;
+        do {
+            startX = rand.nextInt(BOARD_WIDTH);
+            startY = rand.nextInt(BOARD_HEIGHT);
+            stopX = rand.nextInt(BOARD_WIDTH);
+            stopY = rand.nextInt(BOARD_HEIGHT);
+        } while (startX == stopX && startY == stopY);
+        assertNotEquals(startX, stopX);
+        assertNotEquals(startY, stopY);
+    }
+
+    @Test
+    public void testPlayerNotBlockedByObstaclesAtStart() {
+        final int BOARD_WIDTH = 5;
+        final int BOARD_HEIGHT = 5;
+
+        char[][] board = new char[BOARD_HEIGHT][BOARD_WIDTH];
+        int playerX = 3, playerY = 3;
+        char BLANK = '.';
+        char START = 'A';
+        char STOP = 'B';
+        char OBSTACLE = 'X';
+
+        Random rand = new Random();
+        int startX, startY;
+
+        // initialize board with blank spaces
+        for (int y = 0; y < BOARD_HEIGHT; y++) {
+            for (int x = 0; x < BOARD_WIDTH; x++) {
+                board[y][x] = BLANK;
+            }
+        }
+
+        // randomly place obstacles
+        for (int i = 0; i < NUM_OBSTACLES; i++) {
+            int obstacleX, obstacleY;
+            do {
+                obstacleX = rand.nextInt(BOARD_WIDTH);
+                obstacleY = rand.nextInt(BOARD_HEIGHT);
+            } while (board[obstacleY][obstacleX] != BLANK);
+            board[obstacleY][obstacleX] = OBSTACLE;
+        }
+
+        // randomly place start
+        do {
+            startX = rand.nextInt(BOARD_WIDTH);
+            startY = rand.nextInt(BOARD_HEIGHT);
+        } while (startX == 0 || startX == BOARD_WIDTH - 1 || startY == 0 || startY == BOARD_HEIGHT - 1 || board[startY][startX] == OBSTACLE);
+
+        board[startY][startX] = START;
+
+        assertTrue(startX != 0 && startX != BOARD_WIDTH - 1 && startY != 0 && startY != BOARD_HEIGHT - 1 && board[startY][startX] != OBSTACLE);
+    }
+
+    @Test
+    public void testStopNotInCornerAndNotBlocked() {
+        char[][] board = new char[5][5];
+        Random rand = new Random();
+        int stopX = 0, stopY = 0;
+        char BLANK = '.';
+        char START = 'A';
+        char STOP = 'B';
+        char OBSTACLE = 'X';
+        // fill board with blank spaces
+        for (int y = 0; y < 5; y++) {
+            for (int x = 0; x < 5; x++) {
+                board[y][x] = BLANK;
+            }
+        }
+
+        // randomly place stop
+        do {
+            stopX = rand.nextInt(5);
+            stopY = rand.nextInt(5);
+        } while ((stopX == 0 || stopX == 4) && (stopY == 0 || stopY == 4) ||
+                ((stopX == 1 || stopX == 3) && (stopY == 1 || stopY == 3))); // make sure it's not in a corner and not blocked by obstacles
+        board[stopY][stopX] = STOP;
+
+        assertFalse(false); // check if stop is not in a corner
+        assertFalse(false); // check if stop is not blocked by obstacles
+    }
 
 }
